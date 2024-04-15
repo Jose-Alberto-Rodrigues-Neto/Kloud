@@ -23,4 +23,4 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      uses: gradle/actions@v3.3.0
+      uses: gradle/actions@6cec5d49d4d6d4bb982fbed7047db31ea6d38f11
