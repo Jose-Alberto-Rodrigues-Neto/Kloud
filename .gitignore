@@ -1,8 +1,8 @@
 *.iml
 .gradle
-*/build/
+**/build/
 xcuserdata
-!src/*/build/
+!src/**/build/
 local.properties
 .idea
 .DS_Store
