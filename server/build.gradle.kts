@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.ktor)
+
+    kotlin("plugin.serialization") version libs.versions.kotlin
     application
 }
 
@@ -20,4 +22,11 @@ dependencies {
     testImplementation(libs.kotlin.test.junit)
     testImplementation(libs.ktor.server.tests)
     implementation(libs.ktor.server.statuspages)
+    implementation(libs.ktor.server.auth)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.server.content.negotiation)
+    implementation(libs.ktor.server.sessions)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
 }
