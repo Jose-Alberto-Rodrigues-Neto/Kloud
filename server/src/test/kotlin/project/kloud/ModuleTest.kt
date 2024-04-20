@@ -12,7 +12,7 @@ class ModuleTest {
     @Test
     fun testGetIsAlive() = testApplication {
         application {
-            module()
+            isAlive()
         }
 
         client.get("/is-alive") {
@@ -26,7 +26,7 @@ class ModuleTest {
     @Test
     fun testGetIsAliveWithoutPing() = testApplication {
         application {
-            module()
+            isAlive()
         }
 
         client.get("/is-alive").apply {
