@@ -1,10 +1,8 @@
 package project.kloud.plugins
 
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
-import junit.framework.TestCase.assertEquals
 import kotlin.test.Test
 
 class ExceptionHandlerTest {
