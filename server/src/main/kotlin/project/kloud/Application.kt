@@ -16,7 +16,7 @@ fun main() {
 
 fun Application.module() {
     routing {
-        get("/isAlive}") {
+        get("/is-alive") {
             call.apply {
                 val plusOne = parameters["ping"]
                     ?.toLong()
@@ -24,7 +24,7 @@ fun Application.module() {
                     ?: return@get respond(HttpStatusCode.BadRequest, "ping parameter is missing")
 
 
-                return@get respondText("pong $it")
+                return@get respondText("pong $plusOne")
             }
         }
     }
