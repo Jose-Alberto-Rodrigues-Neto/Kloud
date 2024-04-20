@@ -13,6 +13,8 @@ A simplified cloud monitoring app, designed to make monitoring more accessible t
 The main audience that will benefit from the app comprises small and medium-sized business owners who cannot afford to hire multiple cloud experts.
 
 
+# Repository Structure
+
 This is a Kotlin Multiplatform project targeting Android, Server.
 
 * `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
