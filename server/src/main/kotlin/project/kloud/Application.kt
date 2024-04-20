@@ -2,6 +2,7 @@ package project.kloud
 
 import Greeting
 import SERVER_PORT
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -15,8 +16,16 @@ fun main() {
 
 fun Application.module() {
     routing {
-        get("/") {
-            call.respondText("Ktor: ${Greeting().greet()}")
+        get("/isAlive}") {
+            call.apply {
+                val plusOne = parameters["ping"]
+                    ?.toLong()
+                    ?.let { it + 1 }
+                    ?: return@get respond(HttpStatusCode.BadRequest, "ping parameter is missing")
+
+
+                return@get respondText("pong $it")
+            }
         }
     }
 }
