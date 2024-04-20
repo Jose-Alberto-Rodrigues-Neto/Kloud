@@ -8,18 +8,19 @@ import io.ktor.util.reflect.*
 
 fun Application.configureExceptionHandler() {
     install(StatusPages) {
-        exception<Throwable> { call, cause ->
-            if (cause is BadContentTypeFormatException)
-                return@exception call.respondText(
-                    text = cause.localizedMessage,
-                    contentType = ContentType.Text.Plain,
-                    status = HttpStatusCode.BadRequest
-                )
-
+        unhandled { call ->
             call.respondText(
                 text = "Internal server error",
                 contentType = ContentType.Text.Plain,
                 status = HttpStatusCode.InternalServerError
+            )
+        }
+
+        exception<BadContentTypeFormatException> { call, cause ->
+            call.respondText(
+                text = cause.localizedMessage,
+                contentType = ContentType.Text.Plain,
+                status = HttpStatusCode.BadRequest
             )
         }
     }

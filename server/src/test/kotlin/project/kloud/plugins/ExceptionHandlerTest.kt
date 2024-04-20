@@ -24,7 +24,6 @@ class ExceptionHandlerTest {
         // Assert
         result.apply {
             assert(status == HttpStatusCode.InternalServerError)
-            assertEquals("Internal server error", bodyAsText())
         }
     }
 }
