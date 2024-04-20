@@ -31,3 +31,15 @@ This is a Kotlin Multiplatform project targeting Android, Server.
 
 
 Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+
+# How to contribute
+
+## Commit Convention
+
+[Commit Convention](https://github.com/iuricode/padroes-de-commits)
+
+## Pull Request Template
+
+ The name of the PR's need to be `backend or frontend: (issue propose) name of the issue`, something like: `frontend: (feat) create login page`.
+
+ The body of the PR's on the following [link](https://github.com/Jose-Alberto-Rodrigues-Neto/Kloud/blob/main/.github/PR_TEMPLATE.md).
