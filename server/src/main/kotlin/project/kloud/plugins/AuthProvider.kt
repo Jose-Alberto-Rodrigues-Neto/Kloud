@@ -29,13 +29,6 @@ val applicationHttpClient = HttpClient(CIO) {
 data class UserSession(val state: String, val token: String)
 
 @Serializable
-data class User(
-    val id: String,
-    @SerialName("full-name") val fullName: String,
-    val email: String,
-)
-
-@Serializable
 data class GoogleUserInfo(
     val id: String,
     val name: String,
@@ -45,14 +38,6 @@ data class GoogleUserInfo(
     val picture: String,
     val locale: String,
 )
-
-fun Application.configureSession() {
-    install(Sessions) {
-        cookie<UserSession>("session") {
-            cookie.maxAgeInSeconds = 3600
-        }
-    }
-}
 
 @JvmInline
 value class Redirect(val map: MutableMap<String, String>) {
@@ -74,31 +59,27 @@ suspend fun checkUserSession(
 
         // TODO: Test this side effect
         respondRedirect {
-            path("http://0.0.0.0:8080/login")
+            path(LOGIN_URL)
             parameters.append("redirectUrl", request.uri)
         }
     }
 
-
+const val PROVIDER_URL = "http://localhost:8080/callback"
+const val LOGIN_URL = "http://localhost:8080/login"
 const val AUTHORIZE_URL = "https://accounts.google.com/o/oauth2/auth"
 const val ACCESS_TOKEN_URL = "https://accounts.google.com/o/oauth2/token"
-const val URL_PROVIDER = "http://localhost:8080/callback"
-const val USER_INFO_SCOPE = "https://www.googleapis.com/auth/userinfo.profile"
+const val GOOGLE_HOST = "https://www.googleapis.com"
+const val USER_INFO_SCOPE = "auth/userinfo.profile"
+const val OAUTH2_USERINFO = "oauth2/v2/userinfo"
 
 
 fun Application.configureAuthProvider(
     httpClient: HttpClient = applicationHttpClient,
     redirect: Redirect = Redirect(mutableMapOf())
 ) {
-    install(Sessions) {
-        cookie<UserSession>("session") {
-            cookie.maxAgeInSeconds = 3600
-        }
-    }
-
     install(Authentication) {
         oauth("auth-oauth-google") {
-            urlProvider = { URL_PROVIDER }
+            urlProvider = { PROVIDER_URL }
             providerLookup = {
                 OAuthServerSettings.OAuth2ServerSettings(
                     name = "google",
@@ -107,7 +88,7 @@ fun Application.configureAuthProvider(
                     requestMethod = HttpMethod.Post,
                     clientId = System.getenv("GOOGLE_CLIENT_ID"),
                     clientSecret = System.getenv("GOOGLE_CLIENT_SECRET"),
-                    defaultScopes = listOf(USER_INFO_SCOPE),
+                    defaultScopes = listOf("$GOOGLE_HOST/$USER_INFO_SCOPE"),
                     extraAuthParameters = listOf("access_type" to "offline"),
                     onStateCreated = { call: ApplicationCall, state -> redirect[state] = call }
                 )
@@ -146,19 +127,17 @@ fun Application.configureAuthProvider(
         get("/") {
             call.respondRedirect("/login")
         }
-        // TODO: Test if any path other than `/home` or `/` is redirected to /home
-        get("/{path}") {
-            call.respondRedirect("/home")
-        }
+//        // TODO: Test if any path other than `/home` or `/` is redirected to /home
+//        get("/{path}") {
+//            call.respondRedirect("/home")
+//        }
         get("/home") {
             checkUserSession(call) {
-                httpClient.get(USER_INFO_SCOPE) {
-                    headers {
-                        append(HttpHeaders.Authorization, "Bearer ${it.token}")
-                    }
+                httpClient.get("$GOOGLE_HOST/$OAUTH2_USERINFO") {
+                    bearerAuth(it.token)
                 }.body<GoogleUserInfo>().let {
                     // TODO: Test the serialization of GoogleUserInfo
-                    respond(it)
+                    respondText(it.name)
                 }
             }
         }
