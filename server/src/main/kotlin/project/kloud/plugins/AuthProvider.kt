@@ -127,10 +127,10 @@ fun Application.configureAuthProvider(
         get("/") {
             call.respondRedirect("/login")
         }
-//        // TODO: Test if any path other than `/home` or `/` is redirected to /home
-//        get("/{path}") {
-//            call.respondRedirect("/home")
-//        }
+        // TODO: Test if any path other than `/home` or `/` is redirected to /home
+        get("/{path}") {
+            call.respondRedirect("/home")
+        }
         get("/home") {
             checkUserSession(call) {
                 httpClient.get("$GOOGLE_HOST/$OAUTH2_USERINFO") {
