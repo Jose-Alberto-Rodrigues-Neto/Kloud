@@ -6,4 +6,10 @@ plugins {
     alias(libs.plugins.jetbrainsCompose) apply false
     alias(libs.plugins.kotlinJvm) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
+
+    id("org.jetbrains.dokka") version "1.9.20"
+}
+
+subprojects {
+    apply(plugin = "org.jetbrains.dokka")
 }
