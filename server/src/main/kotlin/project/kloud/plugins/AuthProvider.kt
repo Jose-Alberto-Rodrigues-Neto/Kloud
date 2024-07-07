@@ -9,6 +9,7 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.config.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -26,6 +27,7 @@ val applicationHttpClient = HttpClient(CIO) {
     }
 }
 
+@Serializable
 data class UserSession(val state: String, val token: String)
 
 @Serializable
@@ -66,10 +68,7 @@ suspend fun checkUserSession(
 
 const val PROVIDER_URL = "http://localhost:8080/callback"
 const val LOGIN_URL = "http://localhost:8080/login"
-const val AUTHORIZE_URL = "https://accounts.google.com/o/oauth2/auth"
-const val ACCESS_TOKEN_URL = "https://accounts.google.com/o/oauth2/token"
 const val GOOGLE_HOST = "https://www.googleapis.com"
-const val USER_INFO_SCOPE = "auth/userinfo.profile"
 const val OAUTH2_USERINFO = "oauth2/v2/userinfo"
 
 
@@ -77,22 +76,27 @@ fun Application.configureAuthProvider(
     httpClient: HttpClient = applicationHttpClient,
     redirect: Redirect = Redirect(mutableMapOf())
 ) {
+    val oAuth2Settings = environment.config.config("ktor.security.google.oauth2")
+        .run {
+            val issuer = property("issuer").getString()
+
+            OAuthServerSettings.OAuth2ServerSettings(
+                name = "google",
+                authorizeUrl = issuer + property("paths.authorize").getString(),
+                accessTokenUrl = issuer + property("paths.accessToken").getString(),
+                requestMethod = HttpMethod.Post,
+                clientId = property("id").getString(),
+                clientSecret = property("secret").getString(),
+                defaultScopes = property("scopes").getList(),
+                extraAuthParameters = listOf("access_type" to "offline"),
+                onStateCreated = { call: ApplicationCall, state -> redirect[state] = call }
+            )
+        }
+
     install(Authentication) {
         oauth("auth-oauth-google") {
             urlProvider = { PROVIDER_URL }
-            providerLookup = {
-                OAuthServerSettings.OAuth2ServerSettings(
-                    name = "google",
-                    authorizeUrl = AUTHORIZE_URL,
-                    accessTokenUrl = ACCESS_TOKEN_URL,
-                    requestMethod = HttpMethod.Post,
-                    clientId = System.getenv("GOOGLE_CLIENT_ID"),
-                    clientSecret = System.getenv("GOOGLE_CLIENT_SECRET"),
-                    defaultScopes = listOf("$GOOGLE_HOST/$USER_INFO_SCOPE"),
-                    extraAuthParameters = listOf("access_type" to "offline"),
-                    onStateCreated = { call: ApplicationCall, state -> redirect[state] = call }
-                )
-            }
+            providerLookup = { oAuth2Settings }
             client = httpClient
         }
     }
