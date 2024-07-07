@@ -1,3 +1,6 @@
+import com.android.build.gradle.internal.cxx.settings.getDefaultEnvironment
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.ktor)
@@ -11,6 +14,12 @@ version = "1.0.0"
 application {
     mainClass.set("project.kloud.ApplicationKt")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=${extra["development"] ?: "false"}")
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs += "-Xcontext-receivers"
+    }
 }
 
 dependencies {
