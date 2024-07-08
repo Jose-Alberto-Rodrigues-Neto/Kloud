@@ -52,7 +52,7 @@ value class Redirect(val map: MutableMap<String, String>) {
 
 suspend fun checkUserSession(
     call: ApplicationCall,
-    block: suspend ApplicationCall.(UserSession) -> Unit = {}
+    block: suspend ApplicationCall.(UserSession) -> Unit = {},
 ): Unit =
     call.run {
         // TODO: Test this side effect
@@ -74,14 +74,14 @@ const val OAUTH2_USERINFO = "oauth2/v2/userinfo"
 
 fun Application.configureAuthProvider(
     httpClient: HttpClient = applicationHttpClient,
-    redirect: Redirect = Redirect(mutableMapOf())
+    redirect: Redirect = Redirect(mutableMapOf()),
 ) {
     val oAuth2Settings = environment.config.config("ktor.security.google.oauth2")
         .run {
             val issuer = property("issuer").getString()
 
             OAuthServerSettings.OAuth2ServerSettings(
-                name = "google",
+                name = "auth-oauth-google",
                 authorizeUrl = issuer + property("paths.authorize").getString(),
                 accessTokenUrl = issuer + property("paths.accessToken").getString(),
                 requestMethod = HttpMethod.Post,
@@ -92,6 +92,8 @@ fun Application.configureAuthProvider(
                 onStateCreated = { call: ApplicationCall, state -> redirect[state] = call }
             )
         }
+    val userInfoEndpoint = environment.config.config("ktor.security.google.apis.userInfo")
+        .run { property("host").getString() + property("path").getString() }
 
     install(Authentication) {
         oauth("auth-oauth-google") {
@@ -136,13 +138,13 @@ fun Application.configureAuthProvider(
             call.respondRedirect("/home")
         }
         get("/home") {
-            checkUserSession(call) {
-                httpClient.get("$GOOGLE_HOST/$OAUTH2_USERINFO") {
-                    bearerAuth(it.token)
-                }.body<GoogleUserInfo>().let {
-                    // TODO: Test the serialization of GoogleUserInfo
-                    respondText(it.name)
-                }
+            checkUserSession(call) { userSession ->
+                userSession
+                    .let(UserSession::token)
+                    .let { token -> httpClient.get(userInfoEndpoint) { bearerAuth(token) } }
+                    .body<GoogleUserInfo>()
+                    .let(GoogleUserInfo::name)
+                    .let { name -> respondText(name) }
             }
         }
     }

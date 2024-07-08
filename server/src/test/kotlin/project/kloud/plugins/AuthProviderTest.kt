@@ -1,9 +1,7 @@
 package project.kloud.plugins
 
-import ch.qos.logback.core.testUtil.EnvUtilForTests
 import io.ktor.client.*
-import io.ktor.client.engine.*
-import io.ktor.client.plugins.api.*
+import io.ktor.client.call.*
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -11,22 +9,15 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.config.*
-import io.ktor.server.config.ConfigLoader.Companion.load
-import io.ktor.server.engine.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import io.ktor.server.testing.*
-import io.ktor.util.debug.*
-import io.ktor.util.pipeline.*
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.callbackFlow
-import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation as ClientContentNegotiation
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation as ServerContentNegotiation
-
 
 
 class AuthProviderTest {
@@ -63,6 +54,10 @@ class AuthProviderTest {
     context(ApplicationTestBuilder)
     private fun Application.addSessionRoute() =
         routing {
+            install(ServerContentNegotiation) {
+                json()
+            }
+
             post<UserSession>(ADD_SESSION_PATH) { userSession ->
                 call.sessions.set(userSession)
             }
@@ -75,21 +70,6 @@ class AuthProviderTest {
             setBody(userSession)
         }
 
-    context(ApplicationTestBuilder)
-    private fun setupGoogleClientMock(info: GoogleUserInfo) =
-        externalServices {
-            hosts(GOOGLE_HOST) {
-                install(ServerContentNegotiation) {
-                    json()
-                }
-                routing {
-                    get("oauth2/v2/userinfo") {
-                        call.respond(info)
-                    }
-                }
-            }
-        }
-
     @Test
     fun redirectToLogin() = testApplication {
         // Arrange
@@ -97,13 +77,34 @@ class AuthProviderTest {
         val testClient = testClient()
         application {
             configureSession()
-            configureAuthProvider(testClient)
+            configureAuthProvider()
+            Serialization()
+            addSessionRoute()
         }
-        val info = googleInfoByUser( "Jon Doe", "nightwatch@wall.com.ws")
-            .also { setupGoogleClientMock(it) }
+        ApplicationConfig("application.conf")
+            .config("ktor.security.google.apis.userInfo").apply {
+                val host = property("host").getString()
+                val path = property("path").getString()
+
+                externalServices {
+                    hosts(host) {
+                        install(ServerContentNegotiation) {
+                            json()
+                        }
+                        routing {
+                            get(path) {
+                                call.respond(HttpStatusCode.OK)
+                            }
+                        }
+                    }
+                }
+            }
+
 
         // Act
-        val result = testClient.get("/")
+        val result = testClient
+            .apply { addSession(UserSession("token", "state")) }
+            .get("/home")
             .headers[HttpHeaders.Location]
 
         assertEquals(result, "/login")
@@ -116,22 +117,39 @@ class AuthProviderTest {
         val testClient = testClient()
         application {
             configureSession()
-            configureAuthProvider(testClient)
-            Serialization()
+            configureAuthProvider()
             addSessionRoute()
         }
         val info = googleInfoByUser(
             name = "John Doe",
             email = "jonh@mail.com"
-        ).also { setupGoogleClientMock(it) }
+        ).also { info ->
+            ApplicationConfig("application.conf")
+                .config("ktor.security.google.apis.userInfo").apply {
+                    val host = property("host").getString()
+                    val path = property("path").getString()
 
-        testClient.addSession(UserSession("xyz", "123"))
+                    externalServices {
+                        hosts(host) {
+                            install(ServerContentNegotiation) {
+                                json()
+                            }
+                            routing {
+                                get(path) {
+                                    call.respond(info)
+                                }
+                            }
+                        }
+                    }
+                }
+        }
+        testClient.addSession(UserSession("token", "state"))
 
         // Act
-        val result = testClient.get("/home")
+        val result = testClient.get(" http://localhost/oauth2/v2/userinfo")
 
         // Assert
         assertEquals(HttpStatusCode.OK, result.status)
-        assertEquals(info.name, result.bodyAsText())
+        assertEquals(info, result.body())
     }
 }
