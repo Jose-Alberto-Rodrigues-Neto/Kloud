@@ -7,7 +7,7 @@ import kotlin.test.Test
 class ApplicationKtTest {
 
     @Test
-    fun main() {
-
+    fun main() = testApplication {
+        environment { config = ApplicationConfig("application.conf") }
     }
 }

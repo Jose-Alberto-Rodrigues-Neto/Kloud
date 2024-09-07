@@ -7,20 +7,11 @@ import io.ktor.server.response.*
 
 fun Application.configureExceptionHandler() {
     install(StatusPages) {
-        unhandled { call ->
-            call.respondText(
-                text = "Internal server error",
-                contentType = ContentType.Text.Plain,
-                status = HttpStatusCode.InternalServerError
-            )
-        }
-
-        exception<BadContentTypeFormatException> { call, cause ->
-            call.respondText(
-                text = cause.localizedMessage,
-                contentType = ContentType.Text.Plain,
-                status = HttpStatusCode.BadRequest
-            )
+        exception<Throwable> { call, cause ->
+            when (cause) {
+                is IllegalArgumentException -> call.respond(HttpStatusCode.BadRequest, cause.message ?: "")
+                else -> call.respond(HttpStatusCode.InternalServerError, cause.message ?: "")
+            }
         }
     }
 }

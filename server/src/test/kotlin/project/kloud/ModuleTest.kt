@@ -13,9 +13,6 @@ class IsAliveTest {
     @Test
     fun testGetIsAlive() = testApplication {
         // Arrange
-        application {
-            isAlive()
-        }
         val request = request {
             url("/is-alive")
             parameter("ping", "1")
@@ -34,9 +31,6 @@ class IsAliveTest {
     @Test
     fun testGetIsAliveWithoutPing() = testApplication {
         // Arrange
-        application {
-            isAlive()
-        }
         val request = request {
             url("/is-alive")
             parameter("ping", "not a number")
@@ -47,10 +41,8 @@ class IsAliveTest {
 
         // Assert
         result.apply {
-            val (_, message) = bodyAsText().split(":")
-
             assertEquals(status, HttpStatusCode.BadRequest)
-            assertContains(PING_PARAMETER_EXCEPTION_MESSAGE, message.trim())
+            assertContains(PING_PARAMETER_EXCEPTION_MESSAGE, bodyAsText().trim())
         }
     }
 }

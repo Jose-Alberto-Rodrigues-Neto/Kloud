@@ -4,13 +4,11 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.config.*
-import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
@@ -80,9 +78,6 @@ class AuthProviderTest {
 
                 externalServices {
                     hosts(host) {
-                        install(ServerContentNegotiation) {
-                            json()
-                        }
                         routing {
                             get(path) {
                                 call.respond(expectedInfo)
@@ -97,11 +92,6 @@ class AuthProviderTest {
         // Arrange
         defaultEnvironment()
         val testClient = testClient()
-        application {
-            configureSession()
-            configureAuthProvider()
-            Serialization()
-        }
         val userSession = UserSession("token", "state")
         val oAuth2TokenResponse = OAuthAccessTokenResponse.OAuth2(
             accessToken = userSession.token,
@@ -110,11 +100,10 @@ class AuthProviderTest {
             refreshToken = "refreshToken",
             state = userSession.state
         )
-        val oAuth =
-        ApplicationConfig("application.conf")
+        val oAuth = ApplicationConfig("application.conf")
             .config("ktor.security.google.oauth2").apply {
                 val host = property("issuer").getString()
-                val token = property("paths.token").getString()
+                val token = property("paths.accessToken").getString()
                 val authorize = property("paths.authorize").getString()
 
                 externalServices {
@@ -146,11 +135,6 @@ class AuthProviderTest {
         // Arrange
         defaultEnvironment()
         val testClient = testClient()
-        application {
-            configureSession()
-            configureAuthProvider()
-            addSessionRoute()
-        }
         val info = googleInfoByUser(
             name = "John Doe",
             email = "jonh@mail.com"

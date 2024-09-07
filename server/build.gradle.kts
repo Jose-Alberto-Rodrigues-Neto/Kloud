@@ -50,4 +50,6 @@ dependencies {
     implementation(libs.ktor.server.sessions)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
+    implementation("com.github.dotenv-org:dotenv-vault-kotlin:0.0.2")
+    implementation("com.google.api-client:google-api-client:2.4.1")
 }
