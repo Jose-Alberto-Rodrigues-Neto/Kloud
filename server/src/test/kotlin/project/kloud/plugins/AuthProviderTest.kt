@@ -8,6 +8,7 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.config.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -70,17 +71,8 @@ class AuthProviderTest {
             setBody(userSession)
         }
 
-    @Test
-    fun redirectToLogin() = testApplication {
-        // Arrange
-        defaultEnvironment()
-        val testClient = testClient()
-        application {
-            configureSession()
-            configureAuthProvider()
-            Serialization()
-            addSessionRoute()
-        }
+    context(ApplicationTestBuilder)
+    private fun googleApiUserInfoMock(expectedInfo: GoogleUserInfo) =
         ApplicationConfig("application.conf")
             .config("ktor.security.google.apis.userInfo").apply {
                 val host = property("host").getString()
@@ -93,7 +85,49 @@ class AuthProviderTest {
                         }
                         routing {
                             get(path) {
-                                call.respond(HttpStatusCode.OK)
+                                call.respond(expectedInfo)
+                            }
+                        }
+                    }
+                }
+            }
+
+    @Test
+    fun `Should authenticate an user with google oauth2`() = testApplication {
+        // Arrange
+        defaultEnvironment()
+        val testClient = testClient()
+        application {
+            configureSession()
+            configureAuthProvider()
+            Serialization()
+        }
+        val userSession = UserSession("token", "state")
+        val oAuth2TokenResponse = OAuthAccessTokenResponse.OAuth2(
+            accessToken = userSession.token,
+            tokenType = "bearer",
+            expiresIn = 3600,
+            refreshToken = "refreshToken",
+            state = userSession.state
+        )
+        val oAuth =
+        ApplicationConfig("application.conf")
+            .config("ktor.security.google.oauth2").apply {
+                val host = property("issuer").getString()
+                val token = property("paths.token").getString()
+                val authorize = property("paths.authorize").getString()
+
+                externalServices {
+                    hosts(host) {
+                        install(ServerContentNegotiation) {
+                            json()
+                        }
+                        routing {
+                            get(authorize) {
+                                call
+                            }
+                            get(token) {
+                                call.respond(oAuth2TokenResponse)
                             }
                         }
                     }
@@ -102,16 +136,13 @@ class AuthProviderTest {
 
 
         // Act
-        val result = testClient
-            .apply { addSession(UserSession("token", "state")) }
-            .get("/home")
-            .headers[HttpHeaders.Location]
+        val result = testClient.get("/home").body<OAuthAccessTokenResponse.OAuth2>()
 
-        assertEquals(result, "/login")
+        assertEquals(result, oAuth2TokenResponse)
     }
 
     @Test
-    fun connectWithGoogleProvider() = testApplication {
+    fun `Should receive an logged user profile info`() = testApplication {
         // Arrange
         defaultEnvironment()
         val testClient = testClient()
@@ -123,26 +154,8 @@ class AuthProviderTest {
         val info = googleInfoByUser(
             name = "John Doe",
             email = "jonh@mail.com"
-        ).also { info ->
-            ApplicationConfig("application.conf")
-                .config("ktor.security.google.apis.userInfo").apply {
-                    val host = property("host").getString()
-                    val path = property("path").getString()
+        ).also { googleApiUserInfoMock(it) }
 
-                    externalServices {
-                        hosts(host) {
-                            install(ServerContentNegotiation) {
-                                json()
-                            }
-                            routing {
-                                get(path) {
-                                    call.respond(info)
-                                }
-                            }
-                        }
-                    }
-                }
-        }
         testClient.addSession(UserSession("token", "state"))
 
         // Act

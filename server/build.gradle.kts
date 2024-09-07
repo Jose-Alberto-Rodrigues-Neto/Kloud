@@ -1,3 +1,4 @@
+import com.google.cloud.tools.gradle.appengine.appyaml.AppEngineAppYamlExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -13,8 +14,18 @@ plugins {
 group = "project.kloud"
 version = "1.0.0"
 application {
-    mainClass.set("project.kloud.ApplicationKt")
+    mainClass.set("io.ktor.server.netty.EngineMain")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=${extra["development"] ?: "false"}")
+}
+
+configure<AppEngineAppYamlExtension> {
+    stage {
+        setArtifact("build/libs/${project.name}-all.jar")
+    }
+    deploy {
+        version = "GCLOUD_CONFIG"
+        projectId = "GCLOUD_CONFIG"
+    }
 }
 
 tasks.withType<KotlinCompile> {

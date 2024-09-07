@@ -1,4 +1,4 @@
-rootProject.name = "Kloud"
+rootProject.name = "project-kloud"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
