@@ -1,9 +1,10 @@
-import com.android.build.gradle.internal.cxx.settings.getDefaultEnvironment
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.ktor)
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.google.cloud.tools.appengine") version "2.4.4"
 
     kotlin("plugin.serialization") version libs.versions.kotlin
     application

@@ -6,4 +6,6 @@ plugins {
     alias(libs.plugins.jetbrainsCompose) apply false
     alias(libs.plugins.kotlinJvm) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
+    alias(libs.plugins.shadow) apply false
+    alias(libs.plugins.googleCloudToolsAppengine) apply false
 }

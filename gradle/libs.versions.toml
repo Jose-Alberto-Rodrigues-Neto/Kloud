@@ -16,6 +16,8 @@ junit = "4.13.2"
 kotlin = "1.9.23"
 ktor = "2.3.10"
 logback = "1.5.5"
+'cloud-tools-appengine = "2.4.4"
+shadow = "7.1.2"
 serialization = "1.9.10"
 
 [libraries]
@@ -36,7 +38,7 @@ ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "kto
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
 ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor" }
 ktor-server-auth = { module = "io.ktor:ktor-server-auth-jvm", version.ref = "ktor" }
-ktor-server-statuspages = { module = "io.ktor:ktor-server-status-pages-jvm", version.ref = "ktor"}
+ktor-server-statuspages = { module = "io.ktor:ktor-server-status-pages-jvm", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core-jvm", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio-jvm", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation-jvm", version.ref = "ktor" }
@@ -50,4 +52,6 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
+googleCloudToolsAppengine = { id = "com.google.cloud.tools.appengine", version.ref = "cloud-tools-appengine" }
+shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
