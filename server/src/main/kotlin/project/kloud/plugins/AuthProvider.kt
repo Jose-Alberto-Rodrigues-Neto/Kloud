@@ -76,6 +76,7 @@ fun Application.configureAuthProvider(
     httpClient: HttpClient = applicationHttpClient,
     redirect: Redirect = Redirect(mutableMapOf()),
 ) {
+
     val oAuth2Settings = environment.config.config("ktor.security.google.oauth2")
         .run {
             val issuer = property("issuer").getString()

@@ -20,7 +20,7 @@ import java.util.*
 
 fun main(args: Array<String>) = io.ktor.server.netty.EngineMain.main(args)
 
-val env = dotenv()
+
 
 const val PING_PARAMETER_EXCEPTION_MESSAGE = "The ping parameter must be a number"
 

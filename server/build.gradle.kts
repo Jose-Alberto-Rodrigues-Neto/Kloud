@@ -4,8 +4,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.ktor)
-    id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("com.google.cloud.tools.appengine") version "2.4.4"
+    alias(libs.plugins.googleCloudToolsAppengine)
+    alias(libs.plugins.shadow)
 
     kotlin("plugin.serialization") version libs.versions.kotlin
     application
@@ -21,15 +21,14 @@ application {
 configure<AppEngineAppYamlExtension> {
     stage {
         setArtifact("build/libs/${project.name}-all.jar")
+        setAppEngineDirectory("src/main/appengine")
     }
     deploy {
-        tools {
-
-        }
         version = "GCLOUD_CONFIG"
-        projectId = "GCLOUD_CONFIG"
+        projectId = "kloud-test"
     }
 }
+
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {

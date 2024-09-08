@@ -1,2 +1,5 @@
 runtime: java17
-entrypoint: 'java -jar build/libs/server-all.jar'
+entrypoint: 'java -jar server-all.jar'
+env_variables:
+  GOOGLE_CLIENT_ID: "GOOGLE_CLIENT_ID"
+  GOOGLE_CLIENT_SECRET: "GOOGLE_CLIENT_SECRET"
