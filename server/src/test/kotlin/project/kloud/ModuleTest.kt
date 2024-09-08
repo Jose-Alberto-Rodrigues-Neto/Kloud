@@ -4,45 +4,44 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
+import kotlinx.serialization.json.Json
+import project.kloud.config.TestUtils.expectResponse
+import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertContains
-import kotlin.test.assertEquals
 
 class IsAliveTest {
 
     @Test
-    fun testGetIsAlive() = testApplication {
+    fun `When ping is missing should respond with bad request`() = testApplication {
         // Arrange
         val request = request {
-            url("/is-alive")
-            parameter("ping", "1")
+            method = HttpMethod.Get
+            url("/is-alive?")
         }
 
-        // Act
-        val result = client.request(request)
-
-        // Assert
-        result.apply {
-            assert(status == HttpStatusCode.OK)
-            assertEquals("pong 2", bodyAsText())
+        // Act & Assert
+        client.expectResponse(HttpStatusCode.BadRequest, request) { response ->
+            assertContains(response.bodyAsText(), PING_PARAMETER_EXCEPTION_MESSAGE)
         }
     }
 
     @Test
-    fun testGetIsAliveWithoutPing() = testApplication {
+    fun `Should respond ping with pong`() = testApplication {
         // Arrange
         val request = request {
-            url("/is-alive")
-            parameter("ping", "not a number")
+            method = HttpMethod.Get
+            contentType(ContentType.Application.Json)
+            url("/is-alive?ping=1")
         }
+        val now = Date().toInstant().plusSeconds(30L)
 
-        // Act
-        val result = client.request(request)
+        // Act & Assert
+        client.expectResponse(HttpStatusCode.OK, request) { response ->
+            val body = response.bodyAsText()
+                .let { Json.decodeFromString(Pong.serializer(), it) }
 
-        // Assert
-        result.apply {
-            assertEquals(status, HttpStatusCode.BadRequest)
-            assertContains(PING_PARAMETER_EXCEPTION_MESSAGE, bodyAsText().trim())
+            assert(body.deployedAt.isBefore(now))
         }
     }
 }
