@@ -56,4 +56,5 @@ dependencies {
     implementation(libs.arrow.fx.coroutines)
     implementation("com.github.dotenv-org:dotenv-vault-kotlin:0.0.2")
     implementation("com.google.api-client:google-api-client:2.4.1")
+    implementation("com.google.cloud:google-cloud-monitoring:3.49.0")
 }
