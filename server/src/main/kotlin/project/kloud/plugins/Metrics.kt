@@ -1,5 +1,6 @@
 package project.kloud.plugins
 
+import arrow.fx.coroutines.timeInMillis
 import io.ktor.server.application.*
 import io.ktor.server.plugins.callloging.*
 import io.ktor.server.request.*
@@ -15,11 +16,12 @@ fun Application.configureAppMetrics(metricWriter: MetricWriter<PongMetrics>) {
             val status = call.response.status()
             val ping = call.parameters["ping"]?.toLongOrNull() ?: 0
 
-            PongMetrics(
-                status = status?.value,
-                ping = ping
-            ).let(metricWriter::writeMetric)
-                .getOrThrow()
+            metricWriter.writeMetric(
+                PongMetrics(
+                    status = status?.value,
+                    ping = ping
+                ), timeInMillis()
+            ).getOrThrow()
 
             "Status: $status Ping: $ping"
         }

@@ -6,6 +6,7 @@ import com.google.api.Metric
 import com.google.api.MetricDescriptor
 import com.google.api.MetricDescriptor.MetricKind
 import com.google.api.MonitoredResource
+import com.google.api.client.util.DateTime
 import com.google.cloud.monitoring.v3.MetricServiceClient
 import com.google.monitoring.v3.CreateTimeSeriesRequest
 import com.google.monitoring.v3.Point
@@ -13,12 +14,17 @@ import com.google.monitoring.v3.TimeInterval
 import com.google.monitoring.v3.TimeSeries
 import com.google.protobuf.Timestamp
 import io.ktor.server.config.*
+import java.time.Instant
+import java.util.*
+import kotlin.time.Duration.Companion.nanoseconds
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.DurationUnit
 
 interface MetricWriter<T: Map<String, String>> {
     val metricDescriptor: MetricDescriptor
     val monitoredResource: MonitoredResource
 
-    fun writeMetric(metric: T): Result<Unit>
+    fun writeMetric(metric: T, timestamp: Long): Result<Unit>
 }
 
 fun <T: Map<String, String>> ApplicationConfig.configureMetrics(
@@ -36,9 +42,9 @@ fun <T: Map<String, String>> ApplicationConfig.configureMetrics(
 
         val timeSeriesBuffer = mutableListOf<TimeSeries>()
 
-        override fun writeMetric(metric: T): Result<Unit> = result {
-            System.currentTimeMillis()
-                .let(::buildTimeInterval)
+        override fun writeMetric(metric: T, timestamp: Long): Result<Unit> = result {
+            timestamp.
+                let(::buildTimeInterval)
                 .let { interval ->
                     buildTimeSeries(
                         metricData = metricDescriptor.buildMetric(metric),
@@ -68,16 +74,15 @@ private fun ApplicationConfig.createTimeSeriesRequest(
     }.build()
 
 private fun buildTimeInterval(
-    currentMillis: Long = System.currentTimeMillis(),
+    timestamp: Long
 ) = TimeInterval.newBuilder()
     .apply {
-        Timestamp.newBuilder()
+
+        endTime = Timestamp.newBuilder()
             .apply {
-                seconds = currentMillis / 1000
-                nanos = ((currentMillis % 1000) * 1000000).toInt()
-            }
-            .build()
-            .let(::setEndTime)
+                seconds = timestamp.div(1000)
+                nanos = (timestamp % 1000).toInt()
+            }.build()
     }.build()
 
 private fun ApplicationConfig.buildMetricDescriptor() = MetricDescriptor.newBuilder()
