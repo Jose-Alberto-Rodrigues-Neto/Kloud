@@ -6,6 +6,8 @@ import io.ktor.http.*
 import io.ktor.server.testing.*
 import kotlinx.serialization.json.Json
 import project.kloud.config.TestUtils.expectResponse
+import project.kloud.domain.PING_PARAMETER_EXCEPTION_MESSAGE
+import project.kloud.domain.Pong
 import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertContains
@@ -41,7 +43,7 @@ class IsAliveTest {
             val body = response.bodyAsText()
                 .let { Json.decodeFromString(Pong.serializer(), it) }
 
-            assert(body.deployedAt.isBefore(now))
+            assert(body.applicationStart.isBefore(now))
         }
     }
 }

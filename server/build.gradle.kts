@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.ktor.server.sessions)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.server.call.logging)
     implementation(libs.arrow.core)
     implementation(libs.arrow.fx.coroutines)
     implementation("com.github.dotenv-org:dotenv-vault-kotlin:0.0.2")
