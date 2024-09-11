@@ -19,6 +19,7 @@ fun Application.configureAppMetrics(metricWriter: MetricWriter<PongMetrics>) {
                 status = status?.value,
                 ping = ping
             ).let(metricWriter::writeMetric)
+                .getOrThrow()
 
             "Status: $status Ping: $ping"
         }

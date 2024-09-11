@@ -1,5 +1,6 @@
 package project.kloud.outbound.ports
 
+import arrow.core.raise.result
 import com.google.api.LabelDescriptor
 import com.google.api.Metric
 import com.google.api.MetricDescriptor
@@ -17,7 +18,7 @@ interface MetricWriter<T: Map<String, String>> {
     val metricDescriptor: MetricDescriptor
     val monitoredResource: MonitoredResource
 
-    fun writeMetric(metric: T)
+    fun writeMetric(metric: T): Result<Unit>
 }
 
 fun <T: Map<String, String>> ApplicationConfig.configureMetrics(
@@ -35,7 +36,7 @@ fun <T: Map<String, String>> ApplicationConfig.configureMetrics(
 
         val timeSeriesBuffer = mutableListOf<TimeSeries>()
 
-        override fun writeMetric(metric: T) {
+        override fun writeMetric(metric: T): Result<Unit> = result {
             System.currentTimeMillis()
                 .let(::buildTimeInterval)
                 .let { interval ->
@@ -52,6 +53,8 @@ fun <T: Map<String, String>> ApplicationConfig.configureMetrics(
                     timeSeriesConfig
                         .createTimeSeriesRequest(timeSeriesBuffer)
                         .let(client::createTimeSeries)
+
+                    timeSeriesBuffer.clear()
                 }
         }
     }
@@ -141,14 +144,10 @@ private fun MetricDescriptor.buildMetric(labels: Map<String, String>) = Metric.n
         type = this@buildMetric.type
         labelsList
             .associate { it.key to it.valueType }
-            .mapValues { (key, type) ->
+            .mapValues { (key, _) ->
                 val value = labels[key]
 
                 requireNotNull(value) { "Label $key not found" }
-                type.declaringJavaClass.isAssignableFrom(value::class.java)
-                    .let { valueIsAssignableType ->
-                        require(valueIsAssignableType) { "Label $key must be of type ${type.name}" }
-                    }
 
                 value
             }.let(::putAllLabels)

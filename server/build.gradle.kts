@@ -15,7 +15,10 @@ group = "project.kloud"
 version = "1.0.0"
 application {
     mainClass.set("io.ktor.server.netty.EngineMain")
-    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=${extra["development"] ?: "false"}")
+    applicationDefaultJvmArgs = listOf(
+        "-Dio.ktor.development=${extra["development"] ?: "false"}",
+        "-Dio.netty.tryReflectionSetAccessible=false"
+    )
 }
 
 configure<AppEngineAppYamlExtension> {
