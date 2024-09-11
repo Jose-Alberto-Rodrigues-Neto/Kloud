@@ -68,3 +68,6 @@ android {
         debugImplementation(libs.compose.ui.tooling)
     }
 }
+dependencies {
+    implementation(libs.androidx.material3.android)
+}
