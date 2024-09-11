@@ -22,3 +22,9 @@ class MainActivity : ComponentActivity() {
 fun AppAndroidPreview() {
     App()
 }
+
+@Preview
+@Composable
+fun DashboardPreview() {
+
+}
