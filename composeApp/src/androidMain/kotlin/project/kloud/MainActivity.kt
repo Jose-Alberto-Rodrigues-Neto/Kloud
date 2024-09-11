@@ -1,6 +1,7 @@
 package project.kloud
 
 import App
+import Dashboard
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,7 +13,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            AppAndroidPreview()
+            DashboardPreview()
         }
     }
 }
@@ -26,5 +27,5 @@ fun AppAndroidPreview() {
 @Preview
 @Composable
 fun DashboardPreview() {
-
+    Dashboard()
 }
