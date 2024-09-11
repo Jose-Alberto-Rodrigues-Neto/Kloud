@@ -20,6 +20,7 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
+            implementation("com.github.tehras:charts:0.2.4-alpha")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -29,6 +30,7 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(projects.shared)
+            implementation("com.github.tehras:charts:0.2.4-alpha")
         }
     }
 }
@@ -66,4 +68,3 @@ android {
         debugImplementation(libs.compose.ui.tooling)
     }
 }
-
