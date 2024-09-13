@@ -21,6 +21,10 @@ kotlin {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
             implementation("com.github.tehras:charts:0.2.4-alpha")
+            // Retrofit
+            implementation("com.squareup.retrofit2:retrofit:2.9.0")
+            // Retrofit with Scalar Converter
+            implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -31,6 +35,10 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(projects.shared)
             implementation("com.github.tehras:charts:0.2.4-alpha")
+            // Retrofit
+            implementation("com.squareup.retrofit2:retrofit:2.9.0")
+            // Retrofit with Scalar Converter
+            implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
         }
     }
 }
