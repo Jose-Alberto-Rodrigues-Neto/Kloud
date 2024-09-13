@@ -1,5 +1,12 @@
 package Navgation
 
+import Screens.Alerts
+import Screens.Home
+import Screens.Profile
+import Screens.Services
+import Screens.Settings
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Badge
 import androidx.compose.material.Colors
@@ -18,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemColors
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -29,6 +37,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import kloud.composeapp.generated.resources.Res
 import kloud.composeapp.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -40,80 +52,100 @@ data class NavItens(
     val title: String,
     val icon: Int,
     val hasNotification: Boolean,
-    val badgedCount: Int? = null
+    val badgedCount: Int? = null,
 )
 
 @Preview
 @Composable
-fun NavMenu(onClick:Unit) {
-    var selectedItem by remember { mutableIntStateOf(0) }
+fun NavMenu() {
+    val navController = rememberNavController()
+
     val navItens = listOf<NavItens>(
         NavItens(
             title ="Settings",
             icon = R.drawable.settings,
-            hasNotification = false
+            hasNotification = false,
         ),
         NavItens(
             title ="Alerts",
             icon = R.drawable.notifications,
             hasNotification = true,
-            badgedCount = 10
+            badgedCount = 10,
         ),
         NavItens(
             title ="Home",
             icon = R.drawable.home,
-            hasNotification = false
+            hasNotification = false,
         ),
         NavItens(
             title ="Services",
             icon = R.drawable.analytics,
-            hasNotification = false
+            hasNotification = false,
         ),
         NavItens(
             title ="Profile",
             icon = R.drawable.profile_rounded,
-            hasNotification = false
+            hasNotification = false,
         )
     )
-    NavigationBar(
-        modifier = Modifier,
-        containerColor = androidx.compose.ui.res.colorResource(R.color.k_blue),
 
-    ){
-        navItens.forEachIndexed { index, item ->
-            NavigationBarItem(
-                icon = {
-                    BadgedBox(
-                        badge = {
-                            if (!item.hasNotification){
-                                return@BadgedBox
+    var selectedItem by remember { mutableIntStateOf(2) }
+
+    val startDestination = navItens[selectedItem].title
+
+    Scaffold (
+        bottomBar = {
+            NavigationBar(
+                modifier = Modifier,
+                containerColor = androidx.compose.ui.res.colorResource(R.color.k_blue),
+            ){
+                navItens.forEachIndexed { index, item ->
+                    NavigationBarItem(
+                        icon = {
+                            BadgedBox(
+                                badge = {
+                                    if (!item.hasNotification){
+                                        return@BadgedBox
+                                    }
+                                    Badge {
+                                        Text(item.badgedCount.toString())
+                                    }
+                                }
+                            ){
+                                Icon(
+                                    androidx.compose.ui.res.painterResource(item.icon),
+                                    item.title,
+                                )
                             }
-                            Badge {
-                                Text(item.badgedCount.toString())
-                            }
+                        },
+                        alwaysShowLabel = false,
+                        label = {
+                                Text(item.title, color = Color.White)
+                        },
+                        selected = selectedItem == index,
+                        colors = NavigationBarItemColors(Color.White, Color.White, androidx.compose.ui.res.colorResource(R.color.k_blue), androidx.compose.ui.res.colorResource(R.color.k_darker_blue), Color.White, Color.White, Color.White),
+                        onClick = {
+                            selectedItem = index
+                            navController.navigate(route = item.title)
                         }
-                    ){
-                        Icon(
-                            androidx.compose.ui.res.painterResource(item.icon),
-                            item.title,
-                        )
-                    }
-                },
-                alwaysShowLabel = false,
-                label = {
-                        Text(item.title, color = Color.White)
-                },
-                selected = selectedItem == index,
-                colors = NavigationBarItemColors(Color.White, Color.White, androidx.compose.ui.res.colorResource(R.color.k_blue), androidx.compose.ui.res.colorResource(R.color.k_darker_blue), Color.White, Color.White, Color.White),
-                onClick = {
-                    selectedItem = index
-                    onClick
+                    )
                 }
-            )
+            }
+        }
+    ){paddingValues ->
+
+        NavHost(
+            modifier = Modifier.padding(paddingValues),
+            navController = navController,
+            startDestination = startDestination
+        ){
+            composable(route= "Home") { Home() }
+            composable (route = "Settings") { Settings() }
+            composable (route = "Alerts") { Alerts() }
+            composable (route = "Profile") { Profile() }
+            composable (route = "Services") { Services() }
         }
     }
 
+
 }
-
-
-object Home
