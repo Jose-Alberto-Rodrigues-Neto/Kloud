@@ -19,19 +19,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            Scaffold (
-                bottomBar = {
-                    NavMenu()
-                }
-            ) { paddingValues ->
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                ) {
-                    Home()
-                }
-            }
+            AppAndroidPreview()
         }
     }
 }
