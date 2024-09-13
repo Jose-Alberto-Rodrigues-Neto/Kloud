@@ -2,6 +2,7 @@ package project.kloud
 
 import App
 import Navgation.NavMenu
+import Screens.Home
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,7 +19,19 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            AppAndroidPreview()
+            Scaffold (
+                bottomBar = {
+                    NavMenu()
+                }
+            ) { paddingValues ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                ) {
+                    Home()
+                }
+            }
         }
     }
 }
@@ -26,12 +39,9 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun AppAndroidPreview() {
-    fun placeHolder(){
-
-    }
-    Scaffold(
+    Scaffold (
         bottomBar = {
-            NavMenu(placeHolder())
+            NavMenu()
         }
     ) { paddingValues ->
         Box(
@@ -39,7 +49,7 @@ fun AppAndroidPreview() {
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            App()
+            Home()
         }
     }
 }
