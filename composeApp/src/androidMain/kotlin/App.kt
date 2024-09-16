@@ -23,17 +23,25 @@ import kloud.composeapp.generated.resources.compose_multiplatform
 fun App() {
     MaterialTheme {
         var showContent by remember { mutableStateOf(false) }
-        Column(Modifier
+        Column(
+            Modifier
                 .fillMaxWidth()
                 .background(color = Color(0xFFBB86FC)),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Button(onClick = { showContent = !showContent }) {
                 Text("Click me!")
             }
             AnimatedVisibility(showContent) {
                 val greeting = remember { Greeting().greet() }
-                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Image(painterResource(Res.drawable.compose_multiplatform), contentDescription = "Logo")
+                Column(
+                    Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                        painterResource(Res.drawable.compose_multiplatform),
+                        contentDescription = "Logo"
+                    )
                     Text("Compose: $greeting")
                 }
             }

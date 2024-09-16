@@ -4,7 +4,7 @@ import retrofit2.http.GET
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
-private const val BASE_URL = "url"
+private const val BASE_URL = "https://kloud-test.rj.r.appspot.com/v0/is-alive?ping=10"
 
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(ScalarsConverterFactory.create())
@@ -17,7 +17,7 @@ interface IsAliveService {
 }
 
 object IsAliveApi {
-    val isAliveService : IsAliveService by lazy {
+    val isAliveService: IsAliveService by lazy {
         retrofit.create(IsAliveService::class.java)
     }
 }

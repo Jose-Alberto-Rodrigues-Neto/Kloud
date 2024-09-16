@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import ui.screens.DashboardViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,5 +28,6 @@ fun AppAndroidPreview() {
 @Preview
 @Composable
 fun DashboardPreview() {
-    Dashboard()
+    val mockViewModel = DashboardViewModel()
+    Dashboard(viewModel = mockViewModel)
 }
