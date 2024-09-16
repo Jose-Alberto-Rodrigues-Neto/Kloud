@@ -1,0 +1,9 @@
+## Happy Path - 2XX
+GET http://localhost:8080/is-alive?ping=10
+Accept-Charset: utf-8
+
+###
+
+## Sad Path - 4XX
+GET http://localhost:8080/is-alive?ping=bad
+Accept-Charset: utf-8
