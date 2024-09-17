@@ -16,24 +16,22 @@ import androidx.navigation.NavController
 import project.kloud.R
 
 
-
-
 @Composable
-fun Home(navController: NavController){
+fun Home(navController: NavController) {
     val boxProps = listOf(
-    ServiceBoxProps("Computer Engine", R.drawable.home, "Cloud Functions", navController),
-    ServiceBoxProps("Cloud Storage", R.drawable.home, "", navController),
-    ServiceBoxProps("Persistent Disk", R.drawable.home, "Home", navController),
-    ServiceBoxProps("home", R.drawable.home, "Home", navController)
-)
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(37.dp)
-        ) {
-            DashboardPreview(navController = navController)
-            BoxList(boxProps, navController)
-        }
+        ServiceBoxProps("Cloud Storage", R.drawable.cloud_storage, "Cloud Functions", navController),
+        ServiceBoxProps("Compute Engine", R.drawable.compute_engine, "", navController),
+        ServiceBoxProps("Cloud Functions", R.drawable.cloud_functions, "Home", navController),
+        ServiceBoxProps("Persistent Disk", R.drawable.persistent_disk, "Home", navController)
+    )
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(37.dp)
+    ) {
+        DashboardPreview(navController)
+        BoxList(boxProps, navController)
+    }
 }
 

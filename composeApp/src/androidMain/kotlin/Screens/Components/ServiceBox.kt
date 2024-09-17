@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -72,7 +73,7 @@ fun ServiceBox(
                 modifier = Modifier
                     .align(Alignment.Start),
                 text = props.serviceTitle,
-                fontSize = 24.sp,
+                fontSize = 20.sp,
                 color = Color.White
             )
         }
@@ -81,7 +82,11 @@ fun ServiceBox(
 
 @Composable
 fun BoxList(props: List<ServiceBoxProps>, navController: NavController) {
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         TabTitle(
             title = "Serviços",
             icon = R.drawable.keyboard_arrow_right,

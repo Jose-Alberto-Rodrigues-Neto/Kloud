@@ -1,5 +1,6 @@
 import Screens.Components.TabTitle
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
@@ -31,7 +33,7 @@ import project.kloud.R
 import ui.screens.DashboardViewModel
 
 @Composable
-fun Dashboard(viewModel: DashboardViewModel, navController: NavController) {
+fun Dashboard(viewModel: DashboardViewModel) {
 
     var serverStatus by remember { mutableStateOf(viewModel.serverStatus) }
 
@@ -40,31 +42,39 @@ fun Dashboard(viewModel: DashboardViewModel, navController: NavController) {
     }
 
     val bars = listOf(
-        BarChartData.Bar(label = "Bar 1", value = 100f, color = Color.Red),
-        BarChartData.Bar(label = "Bar 2", value = 150f, color = Color.Blue),
-        BarChartData.Bar(label = "Bar 3", value = 80f, color = Color.Green),
-        BarChartData.Bar(label = "Bar 4", value = 120f, color = Color.Yellow)
+        BarChartData.Bar(
+            label = "Bar 1",
+            value = 100f,
+            color = androidx.compose.ui.res.colorResource(R.color.k_blue)
+        ),
+        BarChartData.Bar(
+            label = "Bar 2",
+            value = 150f,
+            color = androidx.compose.ui.res.colorResource(R.color.k_blue)
+        ),
+        BarChartData.Bar(
+            label = "Bar 3",
+            value = 80f,
+            color = androidx.compose.ui.res.colorResource(R.color.k_blue)
+        ),
+        BarChartData.Bar(
+            label = "Bar 4",
+            value = 120f,
+            color = androidx.compose.ui.res.colorResource(R.color.k_blue)
+        )
     )
 
     Column(
-        modifier = Modifier,
+        modifier = Modifier
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TabTitle(
-                title = "Dashboard",
-                icon = R.drawable.keyboard_arrow_right,
-                route = "Services",
-                navController = navController
-            )
-        // Espaçamento entre a NavBar e o gráfico
-        Spacer(modifier = Modifier.weight(1f))
-
         // Gráfico no centro da tela
         BarChart(
             barChartData = BarChartData(
                 bars = bars
             ),
-            modifier = Modifier.size(300.dp),
+            modifier = Modifier.size(200.dp),
             animation = simpleChartAnimation(),
             barDrawer = SimpleBarDrawer(),
             labelDrawer = SimpleValueDrawer(),
@@ -88,14 +98,23 @@ fun Dashboard(viewModel: DashboardViewModel, navController: NavController) {
         ) {
             Text(text = "Verificar Status do Servidor")
         }
-
-        // Espaçamento na parte inferior para centralizar o gráfico
-        Spacer(modifier = Modifier.weight(1f))
     }
 }
 
 @Composable
 fun DashboardPreview(navController: NavController) {
     val mockViewModel = DashboardViewModel()
-    Dashboard(viewModel = mockViewModel, navController = navController)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(20.dp)
+    ) {
+        TabTitle(
+            title = "Dashboard",
+            icon = R.drawable.keyboard_arrow_right,
+            route = "Services",
+            navController = navController
+        )
+        Dashboard(viewModel = mockViewModel)
+    }
 }

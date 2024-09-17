@@ -1,46 +1,22 @@
 package Navgation
 
-import Screens.Alerts
-import Screens.Home
-import Screens.Profile
-import Screens.Services
-import Screens.Settings
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Badge
-import androidx.compose.material.Colors
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemColors
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableIntState
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import kloud.composeapp.generated.resources.Res
 import kloud.composeapp.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -57,7 +33,7 @@ data class NavItens(
 
 @Preview
 @Composable
-fun NavMenu(navController: NavController) {
+fun NavMenu(navController: NavController, item: MutableIntState) {
     val navItens = listOf<NavItens>(
         NavItens(
             title = "Settings",
@@ -87,7 +63,7 @@ fun NavMenu(navController: NavController) {
         )
     )
 
-    var selectedItem by remember { mutableIntStateOf(2) }
+    var selectedItem by item
 
     NavigationBar(
         modifier = Modifier,
