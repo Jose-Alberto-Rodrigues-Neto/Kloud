@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 data class TabTitleProps(
     val icon: Int,
@@ -22,23 +23,24 @@ data class TabTitleProps(
 
 @Composable
 fun TabTitle(
-    title: String?,
+    title: String,
     icon: Int,
     route: String,
-    onClick: Unit
+    navController: NavController
 ){
     Row(
         modifier = Modifier
             .padding(5.dp)
-            .clickable { onClick },
+            .clickable {
+                    navController.navigate(route = route)
+            },
         verticalAlignment = Alignment.CenterVertically
     ){
-        title?.let {
             Text(
-                text = it,
+                text = title,
                 fontSize = 32.sp
             )
-        }
+
         Icon(
         painter = androidx.compose.ui.res.painterResource(icon),
         contentDescription = route,

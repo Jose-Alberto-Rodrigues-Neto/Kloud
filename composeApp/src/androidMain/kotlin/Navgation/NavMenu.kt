@@ -57,33 +57,31 @@ data class NavItens(
 
 @Preview
 @Composable
-fun NavMenu() {
-    val navController = rememberNavController()
-
+fun NavMenu(navController: NavController) {
     val navItens = listOf<NavItens>(
         NavItens(
-            title ="Settings",
+            title = "Settings",
             icon = R.drawable.settings,
             hasNotification = false,
         ),
         NavItens(
-            title ="Alerts",
+            title = "Alerts",
             icon = R.drawable.notifications,
             hasNotification = true,
             badgedCount = 10,
         ),
         NavItens(
-            title ="Home",
+            title = "Home",
             icon = R.drawable.home,
             hasNotification = false,
         ),
         NavItens(
-            title ="Services",
+            title = "Services",
             icon = R.drawable.analytics,
             hasNotification = false,
         ),
         NavItens(
-            title ="Profile",
+            title = "Profile",
             icon = R.drawable.profile_rounded,
             hasNotification = false,
         )
@@ -91,61 +89,48 @@ fun NavMenu() {
 
     var selectedItem by remember { mutableIntStateOf(2) }
 
-    val startDestination = navItens[selectedItem].title
-
-    Scaffold (
-        bottomBar = {
-            NavigationBar(
-                modifier = Modifier,
-                containerColor = androidx.compose.ui.res.colorResource(R.color.k_blue),
-            ){
-                navItens.forEachIndexed { index, item ->
-                    NavigationBarItem(
-                        icon = {
-                            BadgedBox(
-                                badge = {
-                                    if (!item.hasNotification){
-                                        return@BadgedBox
-                                    }
-                                    Badge {
-                                        Text(item.badgedCount.toString())
-                                    }
-                                }
-                            ){
-                                Icon(
-                                    androidx.compose.ui.res.painterResource(item.icon),
-                                    item.title,
-                                )
+    NavigationBar(
+        modifier = Modifier,
+        containerColor = androidx.compose.ui.res.colorResource(R.color.k_blue),
+    ) {
+        navItens.forEachIndexed { index, item ->
+            NavigationBarItem(
+                icon = {
+                    BadgedBox(
+                        badge = {
+                            if (!item.hasNotification) {
+                                return@BadgedBox
                             }
-                        },
-                        alwaysShowLabel = false,
-                        label = {
-                                Text(item.title, color = Color.White)
-                        },
-                        selected = selectedItem == index,
-                        colors = NavigationBarItemColors(Color.White, Color.White, androidx.compose.ui.res.colorResource(R.color.k_blue), androidx.compose.ui.res.colorResource(R.color.k_darker_blue), Color.White, Color.White, Color.White),
-                        onClick = {
-                            selectedItem = index
-                            navController.navigate(route = item.title)
+                            Badge {
+                                Text(item.badgedCount.toString())
+                            }
                         }
-                    )
+                    ) {
+                        Icon(
+                            androidx.compose.ui.res.painterResource(item.icon),
+                            item.title,
+                        )
+                    }
+                },
+                alwaysShowLabel = false,
+                label = {
+                    Text(item.title, color = Color.White)
+                },
+                selected = selectedItem == index,
+                colors = NavigationBarItemColors(
+                    Color.White,
+                    Color.White,
+                    androidx.compose.ui.res.colorResource(R.color.k_blue),
+                    androidx.compose.ui.res.colorResource(R.color.k_darker_blue),
+                    Color.White,
+                    Color.White,
+                    Color.White
+                ),
+                onClick = {
+                    selectedItem = index
+                    navController.navigate(route = item.title)
                 }
-            }
-        }
-    ){paddingValues ->
-
-        NavHost(
-            modifier = Modifier.padding(paddingValues),
-            navController = navController,
-            startDestination = startDestination
-        ){
-            composable(route= "Home") { Home() }
-            composable (route = "Settings") { Settings() }
-            composable (route = "Alerts") { Alerts() }
-            composable (route = "Profile") { Profile() }
-            composable (route = "Services") { Services() }
+            )
         }
     }
-
-
 }

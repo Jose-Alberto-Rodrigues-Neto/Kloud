@@ -29,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import project.kloud.R
 import kotlin.math.round
 
@@ -36,26 +37,29 @@ data class ServiceBoxProps(
     val serviceTitle: String,
     val serviceImage: Int,
     val serviceRoute: String,
-    val onClick: Unit
+    val navController: NavController
 )
 
 @Composable
 fun ServiceBox(
     props: ServiceBoxProps
-){
+) {
     Box(
         modifier = Modifier
             .height(120.dp)
             .width(120.dp)
-            .background(androidx.compose.ui.res.colorResource(R.color.k_blue), shape = RoundedCornerShape(16.dp))
-            .clickable { props.onClick },
+            .background(
+                androidx.compose.ui.res.colorResource(R.color.k_blue),
+                shape = RoundedCornerShape(16.dp)
+            )
+            .clickable { props.navController.navigate(route = props.serviceRoute) },
         contentAlignment = Alignment.Center
-    ){
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp),
-        ){
+        ) {
             Image(
                 modifier = Modifier
                     .align(Alignment.End)
@@ -76,21 +80,29 @@ fun ServiceBox(
 }
 
 @Composable
-fun BoxList(props: List<ServiceBoxProps>){
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(4.dp)
-            .horizontalScroll(rememberScrollState())
-    ){
-        props.forEachIndexed { index, serviceBoxProps ->
-            ServiceBox(
-                props = serviceBoxProps,
-            )
-            Spacer(
-                modifier = Modifier
-                    .width(4.dp)
-            )
+fun BoxList(props: List<ServiceBoxProps>, navController: NavController) {
+    Column {
+        TabTitle(
+            title = "Serviços",
+            icon = R.drawable.keyboard_arrow_right,
+            route = "Services",
+            navController = navController
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(4.dp)
+                .horizontalScroll(rememberScrollState())
+        ) {
+            props.forEachIndexed { index, serviceBoxProps ->
+                ServiceBox(
+                    props = serviceBoxProps,
+                )
+                Spacer(
+                    modifier = Modifier
+                        .width(4.dp)
+                )
+            }
         }
     }
 }

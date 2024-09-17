@@ -1,3 +1,4 @@
+import Screens.Components.TabTitle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,12 +24,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.github.tehras.charts.bar.renderer.yaxis.SimpleYAxisDrawer
 import com.github.tehras.charts.piechart.animation.simpleChartAnimation
+import project.kloud.R
 import ui.screens.DashboardViewModel
 
 @Composable
-fun Dashboard(viewModel: DashboardViewModel) {
+fun Dashboard(viewModel: DashboardViewModel, navController: NavController) {
 
     var serverStatus by remember { mutableStateOf(viewModel.serverStatus) }
 
@@ -44,14 +47,15 @@ fun Dashboard(viewModel: DashboardViewModel) {
     )
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colors.background),
+        modifier = Modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // NavBar na parte superior
-        NavBar(title = "Descrição de Métricas")
-
+        TabTitle(
+                title = "Dashboard",
+                icon = R.drawable.keyboard_arrow_right,
+                route = "Services",
+                navController = navController
+            )
         // Espaçamento entre a NavBar e o gráfico
         Spacer(modifier = Modifier.weight(1f))
 
@@ -91,7 +95,7 @@ fun Dashboard(viewModel: DashboardViewModel) {
 }
 
 @Composable
-fun DashboardPreview() {
+fun DashboardPreview(navController: NavController) {
     val mockViewModel = DashboardViewModel()
-    Dashboard(viewModel = mockViewModel)
+    Dashboard(viewModel = mockViewModel, navController = navController)
 }
