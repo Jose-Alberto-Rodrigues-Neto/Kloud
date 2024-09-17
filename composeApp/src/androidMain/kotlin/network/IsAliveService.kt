@@ -5,7 +5,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.Query
 
-private const val BASE_URL = "http://34.95.198.20:5432/"
+private const val BASE_URL = "http://34.95.198.20:5432/v0/"
 
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(ScalarsConverterFactory.create())
