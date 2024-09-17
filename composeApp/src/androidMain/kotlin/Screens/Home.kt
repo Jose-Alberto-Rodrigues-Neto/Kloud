@@ -1,34 +1,36 @@
 package Screens
 
 import DashboardPreview
-import Navgation.NavMenu
-import androidx.compose.foundation.gestures.snapping.SnapPosition
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
+import Screens.Components.BoxList
+import Screens.Components.ServiceBoxProps
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import project.kloud.R
+
 
 @Composable
-fun Home(){
-
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-
-        ) {
-            DashboardPreview()
-            Text(
-            text = "Home",
-            fontSize = 65.sp,
-            )
-        }
+fun Home(navController: NavController) {
+    val boxProps = listOf(
+        ServiceBoxProps("Cloud Storage", R.drawable.cloud_storage, "CloudStorage", navController),
+        ServiceBoxProps("Compute Engine", R.drawable.compute_engine, "ComputeEngine", navController),
+        ServiceBoxProps("Cloud Functions", R.drawable.cloud_functions, "CloudFunctions", navController),
+        ServiceBoxProps("Persistent Disk", R.drawable.persistent_disk, "PersistentDisk", navController)
+    )
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(37.dp)
+    ) {
+        DashboardPreview(navController, "Dashboards", false)
+        BoxList(boxProps, navController)
+    }
 }
 
