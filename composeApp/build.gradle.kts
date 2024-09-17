@@ -29,6 +29,11 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
+            implementation("com.github.tehras:charts:0.2.4-alpha")
+            // Retrofit
+            implementation("com.squareup.retrofit2:retrofit:2.9.0")
+            // Retrofit with Scalar Converter
+            implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
             implementation("androidx.compose.material3:material3:1.3.0")
         }
         commonMain.dependencies {
@@ -40,7 +45,14 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation("androidx.compose.material3:material3:1.3.0")
             implementation(projects.shared)
+            implementation("com.github.tehras:charts:0.2.4-alpha")
+            // Retrofit
+            implementation("com.squareup.retrofit2:retrofit:2.9.0")
+            // Retrofit with Scalar Converter
+            implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
+
         }
     }
 }
@@ -78,3 +90,8 @@ android {
         debugImplementation(libs.compose.ui.tooling)
     }
 }
+
+dependencies {
+    implementation(libs.androidx.material3.android)
+}
+

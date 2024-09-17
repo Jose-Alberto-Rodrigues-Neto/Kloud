@@ -1,5 +1,6 @@
 package Screens
 
+import DashboardPreview
 import Navgation.NavMenu
 import Screens.Components.BoxList
 import Screens.Components.ServiceBox
@@ -39,6 +40,14 @@ fun Home(){
             modifier = Modifier
                 .fillMaxSize()
         ) {
+            TabTitle(
+                title = "Dashboard",
+                icon = R.drawable.keyboard_arrow_right,
+                route = "Dashboard",
+                onClick = onClick()
+            )
+            DashboardPreview()
+
             TabTitle(
                 title = "Serviços",
                 icon = R.drawable.keyboard_arrow_right,

@@ -1,6 +1,5 @@
 package project.kloud
 
-import App
 import Navgation.NavMenu
 import Screens.Home
 import android.os.Bundle
