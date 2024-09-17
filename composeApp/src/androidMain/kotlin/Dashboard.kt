@@ -89,3 +89,9 @@ fun Dashboard(viewModel: DashboardViewModel) {
         Spacer(modifier = Modifier.weight(1f))
     }
 }
+
+@Composable
+fun DashboardPreview() {
+    val mockViewModel = DashboardViewModel()
+    Dashboard(viewModel = mockViewModel)
+}

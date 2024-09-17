@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            DashboardPreview()
+            AppAndroidPreview()
         }
     }
 }
@@ -29,16 +29,6 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun AppAndroidPreview() {
-    App()
-}
-
-@Preview
-@Composable
-fun DashboardPreview() {
-    val mockViewModel = DashboardViewModel()
-    Dashboard(viewModel = mockViewModel)
-}
-
     Scaffold (
         bottomBar = {
             NavMenu()
