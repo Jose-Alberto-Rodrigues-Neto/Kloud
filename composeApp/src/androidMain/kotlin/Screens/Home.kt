@@ -3,7 +3,6 @@ package Screens
 import DashboardPreview
 import Screens.Components.BoxList
 import Screens.Components.ServiceBoxProps
-import Screens.Components.TabTitle
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,10 +18,10 @@ import project.kloud.R
 @Composable
 fun Home(navController: NavController) {
     val boxProps = listOf(
-        ServiceBoxProps("Cloud Storage", R.drawable.cloud_storage, "Cloud Functions", navController),
-        ServiceBoxProps("Compute Engine", R.drawable.compute_engine, "", navController),
-        ServiceBoxProps("Cloud Functions", R.drawable.cloud_functions, "Home", navController),
-        ServiceBoxProps("Persistent Disk", R.drawable.persistent_disk, "Home", navController)
+        ServiceBoxProps("Cloud Storage", R.drawable.cloud_storage, "CloudStorage", navController),
+        ServiceBoxProps("Compute Engine", R.drawable.compute_engine, "ComputeEngine", navController),
+        ServiceBoxProps("Cloud Functions", R.drawable.cloud_functions, "CloudFunctions", navController),
+        ServiceBoxProps("Persistent Disk", R.drawable.persistent_disk, "PersistentDisk", navController)
     )
     Column(
         modifier = Modifier
@@ -30,7 +29,7 @@ fun Home(navController: NavController) {
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(37.dp)
     ) {
-        DashboardPreview(navController)
+        DashboardPreview(navController, "Dashboards", false)
         BoxList(boxProps, navController)
     }
 }

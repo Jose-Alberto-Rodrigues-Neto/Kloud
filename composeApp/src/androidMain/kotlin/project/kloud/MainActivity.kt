@@ -5,6 +5,10 @@ import Screens.Alerts
 import Screens.Home
 import Screens.Profile
 import Screens.Services
+import Screens.Services.CloudFunctions
+import Screens.Services.CloudStorage
+import Screens.Services.ComputeEngine
+import Screens.Services.PersistentDisk
 import Screens.Settings
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -34,7 +38,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppAndroidPreview() {
     val navController = rememberNavController()
-    var item = remember { mutableIntStateOf(2) }
+    val item = remember { mutableIntStateOf(2) }
     Scaffold (
         bottomBar = {
             NavMenu(navController, item)
@@ -64,6 +68,22 @@ fun AppAndroidPreview() {
             composable (route = "Services") {
                 item.intValue = 3
                 Services()
+            }
+            composable(route = "CloudStorage") {
+                item.intValue = 3
+                CloudStorage(navController)
+            }
+            composable(route = "CloudFunctions"){
+                item.intValue = 3
+                CloudFunctions(navController)
+            }
+            composable(route = "ComputeEngine"){
+                item.intValue = 3
+                ComputeEngine(navController)
+            }
+            composable(route = "PersistentDisk"){
+                item.intValue = 3
+                PersistentDisk(navController)
             }
         }
     }

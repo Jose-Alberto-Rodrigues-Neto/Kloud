@@ -15,24 +15,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
-data class TabTitleProps(
-    val icon: Int,
-    val route: String,
-    val onClick: Unit
-)
-
 @Composable
 fun TabTitle(
     title: String,
     icon: Int,
     route: String,
-    navController: NavController
+    navController: NavController,
+    isClickable: Boolean? = true
 ){
     Row(
         modifier = Modifier
             .padding(5.dp)
             .clickable {
+                if(isClickable == true){
                     navController.navigate(route = route)
+                }
             },
         verticalAlignment = Alignment.CenterVertically
     ){
