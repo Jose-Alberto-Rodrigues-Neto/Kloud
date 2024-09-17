@@ -1,5 +1,6 @@
 package Screens
 
+import DashboardPreview
 import Navgation.NavMenu
 import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,7 @@ fun Home(){
             contentAlignment = Alignment.Center
 
         ) {
+            DashboardPreview()
             Text(
             text = "Home",
             fontSize = 65.sp,

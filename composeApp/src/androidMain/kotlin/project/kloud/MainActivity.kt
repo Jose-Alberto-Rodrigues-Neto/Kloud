@@ -1,6 +1,7 @@
 package project.kloud
 
 import App
+import Dashboard
 import Navgation.NavMenu
 import Screens.Home
 import android.os.Bundle
@@ -13,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import ui.screens.DashboardViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,3 +43,4 @@ fun AppAndroidPreview() {
         }
     }
 }
+
