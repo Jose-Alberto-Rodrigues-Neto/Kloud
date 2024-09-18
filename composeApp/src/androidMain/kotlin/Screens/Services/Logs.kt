@@ -1,11 +1,15 @@
-package Screens
+package Screens.Services
 
+import Screens.LogsDashboard
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -17,11 +21,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import project.kloud.R
 import ui.viewmodels.LogsViewModel
 
 @Composable
-fun Logs(viewModel: LogsViewModel) {
+fun Logs(viewModel: LogsViewModel, navController: NavController) {
 
     var logs by remember { mutableStateOf(viewModel.logs) }
 
@@ -30,9 +37,7 @@ fun Logs(viewModel: LogsViewModel) {
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Spacer(modifier = Modifier.size(16.dp))
@@ -41,14 +46,17 @@ fun Logs(viewModel: LogsViewModel) {
 
         Spacer(modifier = Modifier.size(16.dp))
 
-
-        Button(
-            onClick = { viewModel.logService()},
-            modifier = Modifier
-                .background(color = Color.Blue)
-                .padding(8.dp)
+        Box(
+            modifier = Modifier.width(370.dp).background(
+                colorResource(R.color.k_blue), shape = RoundedCornerShape(16.dp)
+            ), contentAlignment = Alignment.Center
         ) {
-            Text(text = "Logs do cluster")
+            Button(
+                onClick = { viewModel.logService() },
+                modifier = Modifier.background(color = Color.Blue).padding(8.dp)
+            ) {
+                Text(text = "Logs do cluster")
+            }
         }
     }
 

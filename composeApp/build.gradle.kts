@@ -51,6 +51,10 @@ kotlin {
             // Retrofit with Scalar Converter
             implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
 
+            implementation("com.squareup.moshi:moshi:1.15.1")
+            implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
+            implementation("com.squareup.retrofit2:converter-moshi:2.9.0") // ou a versão mais recente
+
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
         }

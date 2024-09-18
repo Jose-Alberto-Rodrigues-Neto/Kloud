@@ -8,6 +8,8 @@ import Screens.Services
 import Screens.Services.CloudFunctions
 import Screens.Services.CloudStorage
 import Screens.Services.ComputeEngine
+import Screens.Services.CpuUsage
+import Screens.Services.Logs
 import Screens.Services.PersistentDisk
 import Screens.Settings
 import android.os.Bundle
@@ -20,9 +22,13 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import ui.viewmodels.CpuUsageViewModel
+import ui.viewmodels.IsAliveViewModel
+import ui.viewmodels.LogsViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +45,9 @@ class MainActivity : ComponentActivity() {
 fun AppAndroidPreview() {
     val navController = rememberNavController()
     val item = remember { mutableIntStateOf(2) }
+    val mockLogsViewModel = LogsViewModel()
+    val mockIsAliveViewModel = IsAliveViewModel()
+    val mockCpuUsageViewModel = CpuUsageViewModel()
     Scaffold (
         bottomBar = {
             NavMenu(navController, item)
@@ -67,7 +76,7 @@ fun AppAndroidPreview() {
             }
             composable (route = "Services") {
                 item.intValue = 3
-                Services()
+                Services(mockIsAliveViewModel)
             }
             composable(route = "CloudStorage") {
                 item.intValue = 3
@@ -84,6 +93,14 @@ fun AppAndroidPreview() {
             composable(route = "PersistentDisk"){
                 item.intValue = 3
                 PersistentDisk(navController)
+            }
+            composable(route = "CpuUsage"){
+                item.intValue = 5
+                CpuUsage(mockCpuUsageViewModel)
+            }
+            composable(route = "Logs"){
+                item.intValue = 6
+                Logs(viewModel = mockLogsViewModel,navController)
             }
         }
     }

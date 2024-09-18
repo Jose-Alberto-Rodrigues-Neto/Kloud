@@ -1,6 +1,8 @@
 package Screens
 
 import Screens.Components.TabTitle
+import Screens.Services.Dtos.JsonData
+import Screens.Services.Dtos.LogEntry
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,39 +35,30 @@ import androidx.navigation.NavController
 import com.github.tehras.charts.bar.renderer.yaxis.SimpleYAxisDrawer
 import com.github.tehras.charts.piechart.animation.simpleChartAnimation
 import project.kloud.R
-
+import ui.viewmodels.LogsViewModel
 
 @Composable
-fun Dashboard() {
-    val bars = listOf(
+fun LogsDashboard(viewModel: LogsViewModel, logs: List<LogEntry>) {
+
+    // Processando os logs para gerar barras com base no status HTTP
+    val statusCounts = logs.filterIsInstance<JsonData>()
+        .groupBy { it.httpRequest.status }
+        .mapValues { (_, logs) -> logs.size } // Conta a quantidade de logs por status HTTP
+
+    // Convertendo os dados processados em barras para o gráfico
+    val bars = statusCounts.map { (status, count) ->
         BarChartData.Bar(
-            label = "Bar 1",
-            value = 100f,
-            color = androidx.compose.ui.res.colorResource(R.color.k_bright_blue)
-        ),
-        BarChartData.Bar(
-            label = "Bar 2",
-            value = 150f,
-            color = androidx.compose.ui.res.colorResource(R.color.k_bright_blue)
-        ),
-        BarChartData.Bar(
-            label = "Bar 3",
-            value = 80f,
-            color = androidx.compose.ui.res.colorResource(R.color.k_bright_blue),
-        ),
-        BarChartData.Bar(
-            label = "Bar 4",
-            value = 120f,
+            label = status.toString(),
+            value = count.toFloat(),
             color = androidx.compose.ui.res.colorResource(R.color.k_bright_blue)
         )
-    )
+    }
 
     Column(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Gráfico no centro da tela
         Box(
             modifier = Modifier
                 .width(370.dp)
@@ -74,43 +67,22 @@ fun Dashboard() {
                     shape = RoundedCornerShape(16.dp)
                 ),
             contentAlignment = Alignment.Center
-        ){
+        ) {
             BarChart(
-            modifier = Modifier
-                .size(200.dp)
-                .padding(10.dp),
-            barChartData = BarChartData(
-                bars = bars
-            ),
-            animation = simpleChartAnimation(),
-            barDrawer = SimpleBarDrawer(),
-            labelDrawer = SimpleValueDrawer(labelTextColor = Color.White),
-            xAxisDrawer = SimpleXAxisDrawer(axisLineColor = Color.White),
-            yAxisDrawer = SimpleYAxisDrawer(axisLineColor = Color.White, labelTextColor = Color.White, labelTextSize = 14.sp)
+                modifier = Modifier
+                    .size(200.dp)
+                    .padding(10.dp),
+                barChartData = BarChartData(
+                    bars = bars
+                ),
+                animation = simpleChartAnimation(),
+                barDrawer = SimpleBarDrawer(),
+                labelDrawer = SimpleValueDrawer(labelTextColor = Color.White),
+                xAxisDrawer = SimpleXAxisDrawer(axisLineColor = Color.White),
+                yAxisDrawer = SimpleYAxisDrawer(axisLineColor = Color.White, labelTextColor = Color.White, labelTextSize = 14.sp)
             )
         }
 
         Spacer(modifier = Modifier.size(16.dp))
-
-        Spacer(modifier = Modifier.size(16.dp))
-
-    }
-}
-
-@Composable
-fun DashboardPreview(navController: NavController, tabTitle: String, isClickable: Boolean) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
-    ) {
-        TabTitle(
-            title = tabTitle,
-            icon = R.drawable.keyboard_arrow_right,
-            route = "Services",
-            navController = navController,
-            isClickable = isClickable
-        )
-        Dashboard()
     }
 }
