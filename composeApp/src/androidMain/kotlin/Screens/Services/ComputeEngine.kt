@@ -1,7 +1,7 @@
 package Screens.Services
 
 
-import DashboardPreview
+import Screens.DashboardPreview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import project.kloud.R
 
 
 @Composable
