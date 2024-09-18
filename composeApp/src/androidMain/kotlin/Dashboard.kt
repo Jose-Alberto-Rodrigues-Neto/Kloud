@@ -117,7 +117,7 @@ enum class DashboardType{
     Pie
 }
 @Composable
-fun DashboardPreview(dashboardType: DashboardType, navController: NavController, tabTitle: String, isClickable: Boolean) {
+fun DashboardPreview(dashboardType: DashboardType, navController: NavController, tabTitle: String, isClickable: Boolean, textStats: String) {
     val mockViewModel = DashboardViewModel()
     Column(
         modifier = Modifier
@@ -149,7 +149,7 @@ fun DashboardPreview(dashboardType: DashboardType, navController: NavController,
                     color = Color.White,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.SemiBold,
-                    text ="Estatistica X",
+                    text = textStats,
                     textAlign = TextAlign.Start
                 )
                 when(dashboardType){
@@ -163,7 +163,7 @@ fun DashboardPreview(dashboardType: DashboardType, navController: NavController,
 }
 
 @Composable
-fun DashboardPreviewSmaller(dashboardType: DashboardType){
+fun DashboardPreviewSmaller(dashboardType: DashboardType, text: String){
     val mockViewModel = DashboardViewModel()
     Box(
             modifier = Modifier
@@ -186,7 +186,7 @@ fun DashboardPreviewSmaller(dashboardType: DashboardType){
                 color = Color.White,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
-                text ="Estatistica X",
+                text = text,
                 textAlign = TextAlign.Center
             )
             when(dashboardType){

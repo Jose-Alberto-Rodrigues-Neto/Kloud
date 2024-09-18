@@ -9,7 +9,9 @@ import Screens.Components.ServiceBoxProps
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -34,16 +36,17 @@ fun Home(navController: NavController) {
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(37.dp)
     ) {
-        DashboardPreview(DashboardType.Line, navController, "Dashboards", true)
+        DashboardPreview(DashboardType.Line, navController, "Dashboards", true, "Desempenho nos últimos dias")
         Row(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ){
-            DashboardPreviewSmaller(DashboardType.Line)
-            DashboardPreviewSmaller(DashboardType.Pie)
+            DashboardPreviewSmaller(DashboardType.Line, "Memória em uso")
+            DashboardPreviewSmaller(DashboardType.Pie, "Tráfego")
         }
         BoxList(boxProps, navController)
+        Spacer(modifier = Modifier.size(5.dp))
     }
 }
 
