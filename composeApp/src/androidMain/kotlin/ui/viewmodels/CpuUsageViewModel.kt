@@ -1,6 +1,6 @@
 package ui.viewmodels
 
-import Screens.Services.Dtos.MetricResponse
+import Screens.Services.Dtos.CpuUsageResponse
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -12,7 +12,7 @@ import java.io.IOException
 
 class CpuUsageViewModel : ViewModel() {
 
-    var usage: MetricResponse? by mutableStateOf(null)
+    var usage: List<CpuUsageResponse> by mutableStateOf(emptyList())
         private set
 
     var serverStatus: String by mutableStateOf("")

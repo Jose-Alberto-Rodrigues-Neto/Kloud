@@ -96,7 +96,7 @@ fun AppAndroidPreview() {
             }
             composable(route = "CpuUsage"){
                 item.intValue = 5
-                CpuUsage(mockCpuUsageViewModel)
+                CpuUsage(mockCpuUsageViewModel, navController)
             }
             composable(route = "Logs"){
                 item.intValue = 6

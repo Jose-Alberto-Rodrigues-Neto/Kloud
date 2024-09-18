@@ -1,6 +1,6 @@
 package network
 
-import Screens.Services.Dtos.MetricResponse
+import Screens.Services.Dtos.CpuUsageResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -8,8 +8,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-private const val BASE_URL = "http://34.95.132.224:5432/v0/" +
-        "metrics?name=/instance/cpu/usage_time&columnWidth=3600&metricLabelName=instance_name&metricLabelValue=gke&startTimeDay=7"
+private const val BASE_URL = "http://34.95.132.224:5432/v0/"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
@@ -28,7 +27,7 @@ interface CpuUsageService {
         @Query("metricLabelName") metricLabelName: String,
         @Query("metricLabelValue") metricLabelValue: String,
         @Query("startTimeDay") startTimeDay: Int
-    ) : MetricResponse
+    ) : List<CpuUsageResponse>
 }
 
 object CpuUsageApi {

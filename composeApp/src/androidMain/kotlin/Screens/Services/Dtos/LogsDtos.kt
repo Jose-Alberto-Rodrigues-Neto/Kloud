@@ -78,7 +78,7 @@ data class Latency(
 )
 
 @JsonClass(generateAdapter = true)
-data class Labels(
+data class LogLabels(
     @Json(name = "check_id")
     val checkId: String,
     @Json(name = "uptime_result_type")

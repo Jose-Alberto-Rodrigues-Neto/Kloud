@@ -1,39 +1,46 @@
 package Screens.Services.Dtos
 
-import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-data class MetricResponse(
-    @Json(name = "metric") val metric: Metric,
-    @Json(name = "resource") val resource: Resource,
-    @Json(name = "points") val points: List<Point>
+@JsonClass(generateAdapter = true)
+data class CpuUsageResponse(
+    val metric: Metric,
+    val resource: Resource,
+    val points: List<Point>
 )
 
+@JsonClass(generateAdapter = true)
 data class Metric(
-    @Json(name = "type") val type: String,
-    @Json(name = "labels") val labels: MetricLabels
+    val type: String,
+    val labels: Labels
 )
 
-data class MetricLabels(
-    @Json(name = "instance_name") val instanceName: String
+@JsonClass(generateAdapter = true)
+data class Labels(
+    val instance_name: String
 )
 
+@JsonClass(generateAdapter = true)
 data class Resource(
-    @Json(name = "type") val type: String,
-    @Json(name = "labels") val labels: ResourceLabels
+    val type: String,
+    val labels: ResourceLabels
 )
 
+@JsonClass(generateAdapter = true)
 data class ResourceLabels(
-    @Json(name = "project_id") val projectId: String,
-    @Json(name = "zone") val zone: String,
-    @Json(name = "instance_id") val instanceId: String
+    val project_id: String,
+    val zone: String,
+    val instance_id: String
 )
 
+@JsonClass(generateAdapter = true)
 data class Point(
-    @Json(name = "interval") val interval: Interval,
-    @Json(name = "value") val value: String
+    val interval: Interval,
+    val value: String
 )
 
+@JsonClass(generateAdapter = true)
 data class Interval(
-    @Json(name = "startTime") val startTime: String,
-    @Json(name = "endTime") val endTime: String
+    val startTime: String,
+    val endTime: String
 )
