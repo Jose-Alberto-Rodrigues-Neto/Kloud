@@ -14,6 +14,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.navigation.compose)
+    implementation("com.github.tehras:charts:0.2.4-alpha")
+    implementation(libs.androidx.material3.android)
 }
 
 kotlin {
@@ -89,9 +91,5 @@ android {
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
     }
-}
-
-dependencies {
-    implementation(libs.androidx.material3.android)
 }
 

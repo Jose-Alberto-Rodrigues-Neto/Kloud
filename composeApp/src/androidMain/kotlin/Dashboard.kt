@@ -1,4 +1,6 @@
 import Screens.Components.TabTitle
+import Screens.Services.Dashboards.LineChartComponent
+import Screens.Services.Dashboards.PieChart
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -72,7 +74,6 @@ fun Dashboard(viewModel: DashboardViewModel) {
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Gráfico no centro da tela
         Box(
             modifier = Modifier
                 .width(370.dp)
@@ -131,6 +132,8 @@ fun DashboardPreview(navController: NavController, tabTitle: String, isClickable
             navController = navController,
             isClickable = isClickable
         )
+        LineChartComponent()
         Dashboard(viewModel = mockViewModel)
+        PieChart()
     }
 }
