@@ -9,11 +9,15 @@ import Screens.Services
 import Screens.Services.CloudFunctions
 import Screens.Services.CloudStorage
 import Screens.Services.ComputeEngine
+import Screens.Services.CpuUsage
+import Screens.Services.Logs
 import Screens.Services.PersistentDisk
 import Screens.Settings
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -25,8 +29,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import ui.viewmodels.CpuUsageViewModel
+import ui.viewmodels.IsAliveViewModel
+import ui.viewmodels.LogsViewModel
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -36,11 +44,15 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun AppAndroidPreview() {
     val navController = rememberNavController()
     val item = remember { mutableIntStateOf(2) }
+    val mockLogsViewModel = LogsViewModel()
+    val mockIsAliveViewModel = IsAliveViewModel()
+    val mockCpuUsageViewModel = CpuUsageViewModel()
     Scaffold (
         topBar = {
             TopAppBar(navController)
@@ -72,7 +84,7 @@ fun AppAndroidPreview() {
             }
             composable (route = "Services") {
                 item.intValue = 3
-                Services()
+                Services(mockIsAliveViewModel)
             }
             composable(route = "CloudStorage") {
                 item.intValue = 3
@@ -89,6 +101,14 @@ fun AppAndroidPreview() {
             composable(route = "PersistentDisk"){
                 item.intValue = 3
                 PersistentDisk(navController)
+            }
+            composable(route = "CpuUsage"){
+                item.intValue = 5
+                CpuUsage(mockCpuUsageViewModel, navController)
+            }
+            composable(route = "Logs"){
+                item.intValue = 6
+                Logs(viewModel = mockLogsViewModel,navController)
             }
         }
     }

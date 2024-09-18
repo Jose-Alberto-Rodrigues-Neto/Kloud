@@ -1,3 +1,5 @@
+package Screens
+
 import Screens.Components.TabTitle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,14 +14,12 @@ import com.github.tehras.charts.bar.renderer.xaxis.SimpleXAxisDrawer
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.Composable
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,17 +33,10 @@ import androidx.navigation.NavController
 import com.github.tehras.charts.bar.renderer.yaxis.SimpleYAxisDrawer
 import com.github.tehras.charts.piechart.animation.simpleChartAnimation
 import project.kloud.R
-import ui.screens.DashboardViewModel
+
 
 @Composable
-fun Dashboard(viewModel: DashboardViewModel) {
-
-    var serverStatus by remember { mutableStateOf(viewModel.serverStatus) }
-
-    LaunchedEffect(viewModel.serverStatus) {
-        serverStatus = viewModel.serverStatus
-    }
-
+fun Dashboard() {
     val bars = listOf(
         BarChartData.Bar(
             label = "Bar 1",
@@ -99,26 +92,13 @@ fun Dashboard(viewModel: DashboardViewModel) {
 
         Spacer(modifier = Modifier.size(16.dp))
 
-        // Status do servidor
-        Text(text = serverStatus)
-
         Spacer(modifier = Modifier.size(16.dp))
 
-        // Botão para verificar status do servidor
-        Button(
-            onClick = { viewModel.pingServer() },
-            modifier = Modifier
-                .background(color = Color.Blue)
-                .padding(8.dp)
-        ) {
-            Text(text = "Verificar Status do Servidor")
-        }
     }
 }
 
 @Composable
 fun DashboardPreview(navController: NavController, tabTitle: String, isClickable: Boolean) {
-    val mockViewModel = DashboardViewModel()
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -131,6 +111,6 @@ fun DashboardPreview(navController: NavController, tabTitle: String, isClickable
             navController = navController,
             isClickable = isClickable
         )
-        Dashboard(viewModel = mockViewModel)
+        Dashboard()
     }
 }
