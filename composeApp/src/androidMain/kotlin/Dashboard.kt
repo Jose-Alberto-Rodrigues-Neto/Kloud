@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -29,6 +30,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -74,19 +77,10 @@ fun Dashboard(viewModel: DashboardViewModel) {
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(
-            modifier = Modifier
-                .width(370.dp)
-                .background(
-                    androidx.compose.ui.res.colorResource(R.color.k_blue),
-                    shape = RoundedCornerShape(16.dp)
-                ),
-            contentAlignment = Alignment.Center
-        ){
             BarChart(
             modifier = Modifier
                 .size(200.dp)
-                .padding(10.dp),
+                .padding(20.dp),
             barChartData = BarChartData(
                 bars = bars
             ),
@@ -96,7 +90,7 @@ fun Dashboard(viewModel: DashboardViewModel) {
             xAxisDrawer = SimpleXAxisDrawer(axisLineColor = Color.White),
             yAxisDrawer = SimpleYAxisDrawer(axisLineColor = Color.White, labelTextColor = Color.White, labelTextSize = 14.sp)
             )
-        }
+
 
         Spacer(modifier = Modifier.size(16.dp))
 
@@ -117,11 +111,17 @@ fun Dashboard(viewModel: DashboardViewModel) {
     }
 }
 
+enum class DashboardType{
+    Bar,
+    Line,
+    Pie
+}
 @Composable
-fun DashboardPreview(navController: NavController, tabTitle: String, isClickable: Boolean) {
+fun DashboardPreview(dashboardType: DashboardType, navController: NavController, tabTitle: String, isClickable: Boolean) {
     val mockViewModel = DashboardViewModel()
     Column(
         modifier = Modifier
+            .height(290.dp)
             .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
@@ -132,8 +132,69 @@ fun DashboardPreview(navController: NavController, tabTitle: String, isClickable
             navController = navController,
             isClickable = isClickable
         )
-        LineChartComponent()
-        Dashboard(viewModel = mockViewModel)
-        PieChart()
+        Box(
+            modifier = Modifier
+                .width(370.dp)
+                .align(Alignment.CenterHorizontally)
+                .background(
+                    androidx.compose.ui.res.colorResource(R.color.k_blue),
+                    shape = RoundedCornerShape(16.dp)
+                ),
+            contentAlignment = Alignment.Center
+        ){
+            Column {
+                Text(
+                    modifier = Modifier
+                        .padding(8.dp),
+                    color = Color.White,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    text ="Estatistica X",
+                    textAlign = TextAlign.Start
+                )
+                when(dashboardType){
+                DashboardType.Bar -> Dashboard(mockViewModel)
+                DashboardType.Line -> LineChartComponent()
+                DashboardType.Pie -> PieChart()
+                }
+            }
+        }
     }
+}
+
+@Composable
+fun DashboardPreviewSmaller(dashboardType: DashboardType){
+    val mockViewModel = DashboardViewModel()
+    Box(
+            modifier = Modifier
+                .width(180.dp)
+                .height(160.dp)
+                .background(
+                    androidx.compose.ui.res.colorResource(R.color.k_blue),
+                    shape = RoundedCornerShape(16.dp)
+                ),
+            contentAlignment = Alignment.Center
+        ){
+        Column(
+            modifier = Modifier
+                .align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Text(
+                modifier = Modifier
+                    .padding(4.dp),
+                color = Color.White,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+                text ="Estatistica X",
+                textAlign = TextAlign.Center
+            )
+            when(dashboardType){
+                DashboardType.Bar -> Dashboard(mockViewModel)
+                DashboardType.Line -> LineChartComponent()
+                DashboardType.Pie -> PieChart()
+                }
+        }
+    }
+
 }

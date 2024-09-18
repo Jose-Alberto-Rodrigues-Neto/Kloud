@@ -2,6 +2,7 @@ package Screens.Services.Dashboards
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -44,7 +45,7 @@ fun LineChartComponent() {
 
     LineChart(
         modifier = Modifier
-            .size(200.dp)
+            .padding(25.dp)
             .fillMaxSize(),
         linesChartData = listOf(LineChartData(points, lineDrawer = SolidLineDrawer())),
         pointDrawer = FilledCircularPointDrawer(

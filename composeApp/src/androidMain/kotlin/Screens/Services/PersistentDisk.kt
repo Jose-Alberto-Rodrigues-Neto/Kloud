@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import project.kloud.R
 
 
 @Composable
@@ -22,7 +21,7 @@ fun PersistentDisk(navController: NavController) {
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(37.dp)
     ) {
-        DashboardPreview(navController, "Persistent Disk Stats", false)
+        DashboardPreview(DashboardType.Line, navController, "Persistent Disk Stats", false)
     }
 }
 
