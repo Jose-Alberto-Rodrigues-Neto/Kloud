@@ -1,16 +1,18 @@
 package Screens.Services
 
-import Screens.LogsDashboard
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,28 +38,41 @@ fun Logs(viewModel: LogsViewModel, navController: NavController) {
         logs = viewModel.logs
     }
 
-    Column(
-        modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            Text(
+                text = "Logs do Cluster",
+                style = MaterialTheme.typography.h6,
+                modifier = Modifier.padding(bottom = 16.dp) // Adiciona espaçamento abaixo do título
+            )
 
-        Spacer(modifier = Modifier.size(16.dp))
-
-        Text(text = logs)
-
-        Spacer(modifier = Modifier.size(16.dp))
-
-        Box(
-            modifier = Modifier.width(370.dp).background(
-                colorResource(R.color.k_blue), shape = RoundedCornerShape(16.dp)
-            ), contentAlignment = Alignment.Center
-        ) {
-            Button(
-                onClick = { viewModel.logService() },
-                modifier = Modifier.background(color = Color.Blue).padding(8.dp)
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f) // Faz com que a LazyColumn ocupe o espaço restante
+                    .padding(bottom = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Logs do cluster")
+                item {
+                    Text(text = logs)
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .width(370.dp)
+                    .background(colorResource(R.color.k_blue), shape = RoundedCornerShape(16.dp))
+                    .align(Alignment.CenterHorizontally)
+            ) {
+                Button(
+                    onClick = { viewModel.logService() },
+                    modifier = Modifier.background(color = Color.Transparent).padding(8.dp)
+                        .width(370.dp)
+                        .padding(6.dp)
+                ) {
+                    Text(text = "Verificar")
+                }
             }
         }
     }
-
 }

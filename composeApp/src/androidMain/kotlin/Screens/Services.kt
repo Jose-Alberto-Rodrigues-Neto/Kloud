@@ -37,9 +37,9 @@ fun Services(viewModel: IsAliveViewModel) {
                 .padding(start = 16.dp, top = 16.dp)
         ) {
             Text(
-                text = "Services",
+                text = "Serviços",
                 fontSize = 50.sp,
-                color = Color.Blue
+                color = Color.Black
             )
         }
 
@@ -66,9 +66,7 @@ fun Services(viewModel: IsAliveViewModel) {
 
                 Button(
                     onClick = { viewModel.pingServer() },
-                    modifier = Modifier
-                        .background(color = Color.Blue)
-                        .padding(8.dp)
+                    modifier = Modifier.background(color = Color.Transparent).padding(8.dp)
                 ) {
                     Text(text = "Verificar Status do Servidor", color = Color.White)
                 }
