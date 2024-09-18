@@ -29,7 +29,7 @@ fun Home(navController: NavController) {
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(37.dp)
     ) {
-        DashboardPreview(navController, "Dashboards", false)
+        DashboardPreview(navController, "Dashboards", true)
         BoxList(boxProps, navController)
     }
 }

@@ -1,6 +1,7 @@
 package project.kloud
 
 import Navgation.NavMenu
+import Navgation.TopAppBar
 import Screens.Alerts
 import Screens.Home
 import Screens.Profile
@@ -14,6 +15,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
@@ -40,6 +42,9 @@ fun AppAndroidPreview() {
     val navController = rememberNavController()
     val item = remember { mutableIntStateOf(2) }
     Scaffold (
+        topBar = {
+            TopAppBar(navController)
+        },
         bottomBar = {
             NavMenu(navController, item)
         }
