@@ -1,5 +1,6 @@
 package Screens.Services
 
+import Screens.Components.CpuUsageDashboard
 import Screens.Components.MetricTable
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -42,6 +43,6 @@ fun CpuUsage(viewModel: CpuUsageViewModel, navController: NavController) {
     }
 
     usage.let { data ->
-        MetricTable(points = data.flatMap { it.points })
+        CpuUsageDashboard(cpuUsageData = usage)
     }
 }
