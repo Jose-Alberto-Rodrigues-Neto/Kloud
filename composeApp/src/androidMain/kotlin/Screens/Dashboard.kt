@@ -22,13 +22,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -38,6 +35,7 @@ import androidx.navigation.NavController
 import com.github.tehras.charts.bar.renderer.yaxis.SimpleYAxisDrawer
 import com.github.tehras.charts.piechart.animation.simpleChartAnimation
 import project.kloud.R
+import ui.viewmodels.CpuUsageViewModel
 
 
 @Composable
@@ -70,7 +68,7 @@ fun Dashboard() {
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-            BarChart(
+        BarChart(
             modifier = Modifier
                 .size(200.dp)
                 .padding(20.dp),
@@ -81,8 +79,12 @@ fun Dashboard() {
             barDrawer = SimpleBarDrawer(),
             labelDrawer = SimpleValueDrawer(labelTextColor = Color.White),
             xAxisDrawer = SimpleXAxisDrawer(axisLineColor = Color.White),
-            yAxisDrawer = SimpleYAxisDrawer(axisLineColor = Color.White, labelTextColor = Color.White, labelTextSize = 14.sp)
+            yAxisDrawer = SimpleYAxisDrawer(
+                axisLineColor = Color.White,
+                labelTextColor = Color.White,
+                labelTextSize = 14.sp
             )
+        )
 
 
         Spacer(modifier = Modifier.size(16.dp))
@@ -92,14 +94,28 @@ fun Dashboard() {
     }
 }
 
-enum class DashboardType{
+enum class DashboardType {
     Bar,
     Line,
     Pie
 }
+
 @Composable
-fun DashboardPreview(dashboardType: DashboardType, navController: NavController, tabTitle: String, isClickable: Boolean, textStats: String) {
+fun DashboardPreview(
+    dashboardType: DashboardType,
+    navController: NavController,
+    tabTitle: String,
+    isClickable: Boolean,
+    textStats: String,
+    nthRowsPerDay: Int = 1,
+    startTimeDat: Int = 7
+) {
     //val mockViewModel = DashboardViewModel()
+
+    val viewModel = CpuUsageViewModel(nthRowsPerDay, startTimeDat)
+
+    //val usage by viewModel.usage.collectAsState()
+
     Column(
         modifier = Modifier
             .height(290.dp)
@@ -122,7 +138,7 @@ fun DashboardPreview(dashboardType: DashboardType, navController: NavController,
                     shape = RoundedCornerShape(16.dp)
                 ),
             contentAlignment = Alignment.Center
-        ){
+        ) {
             Column {
                 Text(
                     modifier = Modifier
@@ -133,10 +149,10 @@ fun DashboardPreview(dashboardType: DashboardType, navController: NavController,
                     text = textStats,
                     textAlign = TextAlign.Start
                 )
-                when(dashboardType){
-                DashboardType.Bar -> Dashboard()
-                DashboardType.Line -> LineChartComponent()
-                DashboardType.Pie -> PieChart()
+                when (dashboardType) {
+                    DashboardType.Bar -> Dashboard()
+                    DashboardType.Line -> LineChartComponent(cpuUsageData = viewModel.usage.collectAsState())
+                    DashboardType.Pie -> PieChart()
                 }
             }
         }
@@ -144,23 +160,24 @@ fun DashboardPreview(dashboardType: DashboardType, navController: NavController,
 }
 
 @Composable
-fun DashboardPreviewSmaller(dashboardType: DashboardType, text: String){
-    //val mockViewModel = DashboardViewModel()
+fun DashboardPreviewSmaller(dashboardType: DashboardType, text: String) {
+    val viewModel = CpuUsageViewModel(1, 7)
+
     Box(
-            modifier = Modifier
-                .width(180.dp)
-                .height(160.dp)
-                .background(
-                    androidx.compose.ui.res.colorResource(R.color.k_blue),
-                    shape = RoundedCornerShape(16.dp)
-                ),
-            contentAlignment = Alignment.Center
-        ){
+        modifier = Modifier
+            .width(180.dp)
+            .height(160.dp)
+            .background(
+                androidx.compose.ui.res.colorResource(R.color.k_blue),
+                shape = RoundedCornerShape(16.dp)
+            ),
+        contentAlignment = Alignment.Center
+    ) {
         Column(
             modifier = Modifier
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        ) {
             Text(
                 modifier = Modifier
                     .padding(4.dp),
@@ -170,11 +187,11 @@ fun DashboardPreviewSmaller(dashboardType: DashboardType, text: String){
                 text = text,
                 textAlign = TextAlign.Center
             )
-            when(dashboardType){
+            when (dashboardType) {
                 DashboardType.Bar -> Dashboard()
-                DashboardType.Line -> LineChartComponent()
+                DashboardType.Line -> LineChartComponent(cpuUsageData = viewModel.usage.collectAsState())
                 DashboardType.Pie -> PieChart()
-                }
+            }
         }
     }
 

@@ -10,7 +10,6 @@ import Screens.Services
 import Screens.Services.CloudFunctions
 import Screens.Services.CloudStorage
 import Screens.Services.ComputeEngine
-import Screens.Services.CpuUsage
 import Screens.Services.Logs
 import Screens.Services.PersistentDisk
 import Screens.Settings
@@ -20,7 +19,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -56,13 +54,11 @@ fun AppAndroidPreview() {
     var page = remember { mutableStateOf(false) }
     val mockLogsViewModel = LogsViewModel()
     val mockIsAliveViewModel = IsAliveViewModel()
-
     LaunchedEffect(navController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             page.value = destination.route != "Login"
         }
     }
-
     Scaffold (
         topBar = {
             if (page.value) {

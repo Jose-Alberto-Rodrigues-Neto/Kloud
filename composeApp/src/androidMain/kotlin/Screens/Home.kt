@@ -25,7 +25,7 @@ fun Home(navController: NavController) {
         ServiceBoxProps("Compute Engine", R.drawable.compute_engine, "ComputeEngine", navController),
         ServiceBoxProps("Cloud Functions", R.drawable.cloud_functions, "CloudFunctions", navController),
         ServiceBoxProps("Persistent Disk", R.drawable.persistent_disk, "PersistentDisk", navController),
-        ServiceBoxProps("Logs", R.drawable.persistent_disk, "Logs", navController)
+        ServiceBoxProps("Logs", R.drawable.logs, "Logs", navController)
     )
     Column(
         modifier = Modifier

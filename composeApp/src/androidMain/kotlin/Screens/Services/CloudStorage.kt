@@ -2,10 +2,6 @@ package Screens.Services
 
 import Screens.DashboardPreviewSmaller
 import Screens.DashboardType
-
-
-
-
 import Screens.DashboardPreview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,7 +26,7 @@ fun CloudStorage(navController: NavController) {
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(37.dp)
     ) {
-        DashboardPreview(DashboardType.Line, navController, "Cloud Storage Stats", false, "Desempenho nos últimos 15 dias")
+        DashboardPreview(DashboardType.Line,navController, "Cloud Storage Stats", false, "Desempenho nos últimos 15 dias")
         Row(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally),
