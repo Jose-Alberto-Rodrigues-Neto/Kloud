@@ -9,7 +9,6 @@ import Screens.Services
 import Screens.Services.CloudFunctions
 import Screens.Services.CloudStorage
 import Screens.Services.ComputeEngine
-import Screens.Services.CpuUsage
 import Screens.Services.Logs
 import Screens.Services.PersistentDisk
 import Screens.Settings
@@ -19,7 +18,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
@@ -52,7 +50,6 @@ fun AppAndroidPreview() {
     val item = remember { mutableIntStateOf(2) }
     val mockLogsViewModel = LogsViewModel()
     val mockIsAliveViewModel = IsAliveViewModel()
-    val mockCpuUsageViewModel = CpuUsageViewModel()
     Scaffold (
         topBar = {
             TopAppBar(navController)

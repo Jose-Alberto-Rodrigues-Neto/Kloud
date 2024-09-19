@@ -5,6 +5,7 @@ import Screens.Services.Dtos.CpuUsageResponse
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import com.github.tehras.charts.line.LineChart
 import com.github.tehras.charts.line.LineChartData
 import com.github.tehras.charts.line.renderer.point.FilledCircularPointDrawer
@@ -18,11 +19,6 @@ import java.util.Date
 
 @Composable
 fun CpuUsageDashboard(cpuUsageData: List<CpuUsageResponse>) {
-    // Verifica se há dados disponíveis para evitar a exceção
-    if (cpuUsageData.isEmpty()) {
-        return
-    }
-
     val lineChartData = cpuUsageData.map { response ->
         LineChartData(
             points = response.points.map { point ->
