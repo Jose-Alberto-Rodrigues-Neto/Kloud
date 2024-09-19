@@ -3,6 +3,7 @@ package Screens.Services
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,6 +30,8 @@ import androidx.navigation.NavController
 import project.kloud.R
 import ui.viewmodels.LogsViewModel
 
+import androidx.compose.foundation.lazy.items
+
 @Composable
 fun Logs(viewModel: LogsViewModel, navController: NavController) {
 
@@ -43,18 +46,30 @@ fun Logs(viewModel: LogsViewModel, navController: NavController) {
             Text(
                 text = "Logs do Cluster",
                 style = MaterialTheme.typography.h6,
-                modifier = Modifier.padding(bottom = 16.dp) // Adiciona espaçamento abaixo do título
+                modifier = Modifier.padding(bottom = 16.dp)
             )
 
+            // Agora usando `items` corretamente para a lista de logs
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f) // Faz com que a LazyColumn ocupe o espaço restante
+                    .weight(1f)
                     .padding(bottom = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                item {
-                    Text(text = logs)
+                // Aqui garantimos que logs seja uma lista de LogData
+                items(logs) { log ->
+                    when (log.type) {
+                        "PROTO" -> {
+                            LogRow(type = log.type, data = log.data.toString())
+                        }
+                        "JSON" -> {
+                            LogRow(type = log.type, data = parseJsonLog(log.data))
+                        }
+                        "STRING" -> {
+                            LogRow(type = log.type, data = log.data.toString())
+                        }
+                    }
                 }
             }
 
@@ -74,5 +89,21 @@ fun Logs(viewModel: LogsViewModel, navController: NavController) {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun LogRow(type: String, data: String) {
+    Row(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+        Text(text = type, modifier = Modifier.weight(1f), style = MaterialTheme.typography.body1)
+        Text(text = data, modifier = Modifier.weight(2f), style = MaterialTheme.typography.body2)
+    }
+}
+
+fun parseJsonLog(data: Any): String {
+    return if (data is Map<*, *>) {
+        data["message"]?.toString() ?: "No message"
+    } else {
+        "Invalid JSON log"
     }
 }

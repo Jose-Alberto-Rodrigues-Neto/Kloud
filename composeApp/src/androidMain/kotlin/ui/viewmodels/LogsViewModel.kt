@@ -1,6 +1,6 @@
 package ui.viewmodels
 
-import Screens.Services.Dtos.LogEntry
+import Screens.Services.Dtos.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -14,8 +14,10 @@ import java.io.IOException
 
 class LogsViewModel: ViewModel() {
 
-    var logs: String by mutableStateOf("Logs desconhecidos")
+    var logs: List<Log> by mutableStateOf(emptyList())
         private set
+
+    var errorMessage: String? by mutableStateOf(null)
 
     fun logService() {
         viewModelScope.launch {
@@ -24,8 +26,9 @@ class LogsViewModel: ViewModel() {
                     LogApi.logService.getLogs()
                 }
                 logs = response
+                errorMessage = null
             } catch (e: IOException) {
-                logs = "Erro ao buscar logs ${e.message}"
+                errorMessage = "Erro ao buscar logs: ${e.message}"
             }
         }
     }
