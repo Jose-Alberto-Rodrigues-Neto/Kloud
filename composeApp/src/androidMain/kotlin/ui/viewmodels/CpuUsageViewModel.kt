@@ -22,7 +22,7 @@ class CpuUsageViewModel : ViewModel() {
             try {
                 val response = CpuUsageApi.cpuUsageService.getCpuUsage(
                     name = "/instance/cpu/usage_time",
-                    columnWidth = 3600,
+                    columnWidth = 86400,
                     metricLabelName = "instance_name",
                     metricLabelValue = "gke",
                     startTimeDay = 7
