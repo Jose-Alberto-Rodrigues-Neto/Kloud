@@ -1,9 +1,5 @@
 package Screens
 
-import Dashboard
-import DashboardPreview
-import DashboardPreviewSmaller
-import DashboardType
 import Screens.Components.BoxList
 import Screens.Components.ServiceBoxProps
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +24,8 @@ fun Home(navController: NavController) {
         ServiceBoxProps("Cloud Storage", R.drawable.cloud_storage, "CloudStorage", navController),
         ServiceBoxProps("Compute Engine", R.drawable.compute_engine, "ComputeEngine", navController),
         ServiceBoxProps("Cloud Functions", R.drawable.cloud_functions, "CloudFunctions", navController),
-        ServiceBoxProps("Persistent Disk", R.drawable.persistent_disk, "PersistentDisk", navController)
+        ServiceBoxProps("Persistent Disk", R.drawable.persistent_disk, "PersistentDisk", navController),
+        ServiceBoxProps("Logs", R.drawable.persistent_disk, "Logs", navController)
     )
     Column(
         modifier = Modifier

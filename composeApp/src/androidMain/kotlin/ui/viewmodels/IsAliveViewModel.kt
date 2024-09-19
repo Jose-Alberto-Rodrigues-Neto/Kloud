@@ -1,4 +1,4 @@
-package ui.screens
+package ui.viewmodels
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import network.IsAliveApi
 import java.io.IOException
 
-class DashboardViewModel : ViewModel() {
+class IsAliveViewModel : ViewModel() {
 
     var serverStatus: String by mutableStateOf("Status desconhecido")
         private set

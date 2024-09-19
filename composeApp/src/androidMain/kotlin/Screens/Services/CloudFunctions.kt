@@ -1,8 +1,8 @@
 package Screens.Services
 
-
-import DashboardPreview
-import DashboardPreviewSmaller
+import Screens.DashboardPreviewSmaller
+import Screens.DashboardType
+import Screens.DashboardPreview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

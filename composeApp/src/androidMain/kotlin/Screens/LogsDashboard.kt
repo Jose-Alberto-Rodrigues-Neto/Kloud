@@ -1,0 +1,86 @@
+package Screens
+
+import Screens.Components.TabTitle
+import Screens.Services.Dtos.JsonData
+import Screens.Services.Dtos.LogEntry
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import com.github.tehras.charts.bar.BarChart
+import com.github.tehras.charts.bar.BarChartData
+import com.github.tehras.charts.bar.renderer.bar.SimpleBarDrawer
+import com.github.tehras.charts.bar.renderer.label.SimpleValueDrawer
+import com.github.tehras.charts.bar.renderer.xaxis.SimpleXAxisDrawer
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.github.tehras.charts.bar.renderer.yaxis.SimpleYAxisDrawer
+import com.github.tehras.charts.piechart.animation.simpleChartAnimation
+import project.kloud.R
+import ui.viewmodels.LogsViewModel
+
+@Composable
+fun LogsDashboard(viewModel: LogsViewModel, logs: List<LogEntry>) {
+
+    val statusCounts = logs.filterIsInstance<JsonData>()
+        .groupBy { it.httpRequest.status }
+        .mapValues { (_, logs) -> logs.size }
+
+    val bars = statusCounts.map { (status, count) ->
+        BarChartData.Bar(
+            label = status.toString(),
+            value = count.toFloat(),
+            color = androidx.compose.ui.res.colorResource(R.color.k_bright_blue)
+        )
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier
+                .width(370.dp)
+                .background(
+                    androidx.compose.ui.res.colorResource(R.color.k_blue),
+                    shape = RoundedCornerShape(16.dp)
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            BarChart(
+                modifier = Modifier
+                    .size(200.dp)
+                    .padding(10.dp),
+                barChartData = BarChartData(
+                    bars = bars
+                ),
+                animation = simpleChartAnimation(),
+                barDrawer = SimpleBarDrawer(),
+                labelDrawer = SimpleValueDrawer(labelTextColor = Color.White),
+                xAxisDrawer = SimpleXAxisDrawer(axisLineColor = Color.White),
+                yAxisDrawer = SimpleYAxisDrawer(axisLineColor = Color.White, labelTextColor = Color.White, labelTextSize = 14.sp)
+            )
+        }
+
+        Spacer(modifier = Modifier.size(16.dp))
+    }
+}
