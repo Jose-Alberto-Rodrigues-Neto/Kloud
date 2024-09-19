@@ -102,7 +102,9 @@ fun LogRow(type: String, data: String) {
 
 fun parseJsonLog(data: Any): String {
     return if (data is Map<*, *>) {
-        data["message"]?.toString() ?: "No message"
+        val severity = data["severity"]?.toString() ?: "No severity"
+        val message = data["message"]?.toString() ?: "No message"
+        "Severity: $severity, Message: $message"
     } else {
         "Invalid JSON log"
     }
