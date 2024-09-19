@@ -1,8 +1,6 @@
 package Screens
 
 import Screens.Components.TabTitle
-import Screens.Services.Dtos.JsonData
-import Screens.Services.Dtos.LogEntry
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,49 +36,8 @@ import project.kloud.R
 import ui.viewmodels.LogsViewModel
 
 @Composable
-fun LogsDashboard(viewModel: LogsViewModel, logs: List<LogEntry>) {
+fun LogsDashboard(viewModel: LogsViewModel) {
 
-    val statusCounts = logs.filterIsInstance<JsonData>()
-        .groupBy { it.httpRequest.status }
-        .mapValues { (_, logs) -> logs.size }
 
-    val bars = statusCounts.map { (status, count) ->
-        BarChartData.Bar(
-            label = status.toString(),
-            value = count.toFloat(),
-            color = androidx.compose.ui.res.colorResource(R.color.k_bright_blue)
-        )
-    }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Box(
-            modifier = Modifier
-                .width(370.dp)
-                .background(
-                    androidx.compose.ui.res.colorResource(R.color.k_blue),
-                    shape = RoundedCornerShape(16.dp)
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            BarChart(
-                modifier = Modifier
-                    .size(200.dp)
-                    .padding(10.dp),
-                barChartData = BarChartData(
-                    bars = bars
-                ),
-                animation = simpleChartAnimation(),
-                barDrawer = SimpleBarDrawer(),
-                labelDrawer = SimpleValueDrawer(labelTextColor = Color.White),
-                xAxisDrawer = SimpleXAxisDrawer(axisLineColor = Color.White),
-                yAxisDrawer = SimpleYAxisDrawer(axisLineColor = Color.White, labelTextColor = Color.White, labelTextSize = 14.sp)
-            )
-        }
-
-        Spacer(modifier = Modifier.size(16.dp))
-    }
 }
