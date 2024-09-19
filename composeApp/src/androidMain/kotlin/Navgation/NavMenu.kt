@@ -60,11 +60,6 @@ fun NavMenu(navController: NavController, item: MutableIntState) {
             title = "Profile",
             icon = R.drawable.profile_rounded,
             hasNotification = false,
-        ),
-        NavItens(
-            title = "CpuUsage", // Adicione a rota para CPU Usage
-            icon = R.drawable.analytics, // Substitua pelo ícone apropriado
-            hasNotification = false,
         )
     )
 

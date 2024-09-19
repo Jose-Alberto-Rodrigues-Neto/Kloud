@@ -22,6 +22,7 @@ import androidx.navigation.NavController
 
 @Composable
 fun ComputeEngine(navController: NavController) {
+    //CPU usage vai ser colocado em algum lugar aqui
     Column(
         modifier = Modifier
             .fillMaxSize()

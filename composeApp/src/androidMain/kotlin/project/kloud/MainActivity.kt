@@ -102,12 +102,8 @@ fun AppAndroidPreview() {
                 item.intValue = 3
                 PersistentDisk(navController)
             }
-            composable(route = "CpuUsage"){
-                item.intValue = 5
-                CpuUsage(mockCpuUsageViewModel, navController)
-            }
             composable(route = "Logs"){
-                item.intValue = 6
+                item.intValue = 3
                 Logs(viewModel = mockLogsViewModel,navController)
             }
         }
