@@ -1,6 +1,7 @@
 package project.kloud
 
 import Navgation.NavMenu
+import Navgation.TopAppBar
 import Screens.Alerts
 import Screens.Home
 import Screens.Profile
@@ -18,6 +19,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
@@ -52,6 +54,9 @@ fun AppAndroidPreview() {
     val mockIsAliveViewModel = IsAliveViewModel()
     val mockCpuUsageViewModel = CpuUsageViewModel()
     Scaffold (
+        topBar = {
+            TopAppBar(navController)
+        },
         bottomBar = {
             NavMenu(navController, item)
         }
@@ -97,12 +102,8 @@ fun AppAndroidPreview() {
                 item.intValue = 3
                 PersistentDisk(navController)
             }
-            composable(route = "CpuUsage"){
-                item.intValue = 5
-                CpuUsage(mockCpuUsageViewModel, navController)
-            }
             composable(route = "Logs"){
-                item.intValue = 6
+                item.intValue = 3
                 Logs(viewModel = mockLogsViewModel,navController)
             }
         }
