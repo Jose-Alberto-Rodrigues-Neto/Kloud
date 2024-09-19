@@ -4,6 +4,7 @@ import Navgation.NavMenu
 import Navgation.TopAppBar
 import Screens.Alerts
 import Screens.Home
+import Screens.Login
 import Screens.Profile
 import Screens.Services
 import Screens.Services.CloudFunctions
@@ -20,7 +21,9 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,21 +51,34 @@ class MainActivity : ComponentActivity() {
 fun AppAndroidPreview() {
     val navController = rememberNavController()
     val item = remember { mutableIntStateOf(2) }
+    var page = remember { mutableStateOf(false) }
     val mockLogsViewModel = LogsViewModel()
     val mockIsAliveViewModel = IsAliveViewModel()
+    LaunchedEffect(navController) {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            page.value = destination.route != "Login"
+        }
+    }
     Scaffold (
         topBar = {
-            TopAppBar(navController)
+            if (page.value) {
+                TopAppBar(navController)
+            }
         },
         bottomBar = {
-            NavMenu(navController, item)
+            if (page.value) {
+                NavMenu(navController, item)
+            }
         }
     ){paddingValues ->
         NavHost(
             modifier = Modifier.padding(paddingValues),
             navController = navController,
-            startDestination = "Home"
+            startDestination = "Login"
         ){
+            composable(route = "Login") {
+                Login(navController)
+            }
             composable(route = "Home") {
                 item.intValue = 2
                 Home(navController)
