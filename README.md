@@ -2,7 +2,7 @@
 
 ## What is it about?
 
-//uma descrição mais detalhada
+The Cloud Monitoring App is designed to provide real-time visibility and insights into cloud infrastructure performance. It aims to help businesses monitor their cloud environments efficiently, detect issues, and optimize resource utilization across multiple cloud platforms. The app will offer a comprehensive suite of monitoring tools, including performance metrics, alerts, and analytics dashboards, to ensure the health and security of cloud-based systems.
 
 ## Objectives:
 
@@ -11,6 +11,10 @@ A simplified cloud monitoring app, designed to make monitoring more accessible t
 ## Main public:
 
 The main audience that will benefit from the app comprises small and medium-sized business owners who cannot afford to hire multiple cloud experts.
+
+# How to download apk
+
+[![](https://markdown-videos-api.jorgenkh.no/youtube/_wL90vErURQ)](https://youtu.be/_wL90vErURQ))
 
 
 # Repository Structure
