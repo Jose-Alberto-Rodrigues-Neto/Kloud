@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
 fun AppAndroidPreview() {
     val navController = rememberNavController()
     val item = remember { mutableIntStateOf(2) }
-    var page = remember { mutableStateOf(false) }
+    val page = remember { mutableStateOf(false) }
     val mockLogsViewModel = LogsViewModel()
     val mockIsAliveViewModel = IsAliveViewModel()
     LaunchedEffect(navController) {
@@ -79,13 +79,13 @@ fun AppAndroidPreview() {
             composable(route = "Login") {
                 Login(navController)
             }
+            composable(route = "Settings") {
+                item.intValue = 0
+                Settings(navController)
+            }
             composable(route = "Home") {
                 item.intValue = 2
                 Home(navController)
-            }
-            composable (route = "Settings") {
-                item.intValue = 0
-                Settings()
             }
             composable (route = "Alerts") {
                 item.intValue = 1
@@ -97,7 +97,7 @@ fun AppAndroidPreview() {
             }
             composable (route = "Services") {
                 item.intValue = 3
-                Services(mockIsAliveViewModel)
+                Services(mockIsAliveViewModel, navController)
             }
             composable(route = "CloudStorage") {
                 item.intValue = 3

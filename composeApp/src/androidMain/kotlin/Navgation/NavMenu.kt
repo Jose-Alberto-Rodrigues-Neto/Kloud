@@ -37,7 +37,7 @@ fun NavMenu(navController: NavController, item: MutableIntState) {
     val navItens = listOf<NavItens>(
         NavItens(
             title = "Settings",
-            icon = R.drawable.settings,
+            icon = R.drawable.notifications,
             hasNotification = false,
         ),
         NavItens(
