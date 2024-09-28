@@ -5,7 +5,19 @@
 
 ## What is it about?
 
-The Cloud Monitoring App is designed to provide real-time visibility and insights into cloud infrastructure performance. It aims to help businesses monitor their cloud environments efficiently, detect issues, and optimize resource utilization across multiple cloud platforms. The app will offer a comprehensive suite of monitoring tools, including performance metrics, alerts, and analytics dashboards, to ensure the health and security of cloud-based systems.
+The **Key Cloud (Kloud)** is designed to provide real-time visibility and insights into cloud infrastructure performance. It aims to help businesses monitor their cloud environments efficiently, detect issues, and optimize resource utilization at Google Cloud Platform. The app will offer a comprehensive suite of monitoring tools, including performance metrics, alerts, and analytics dashboards, to ensure the health and security of cloud-based systems.
+
+#### OBS:
+
+This was a project created during my `Software Engineering` course in the `Computer Science` program at the ***"Universidade Federal do Ceará" (UFC)***. Unfortunately, we didn't continue with the app after the course ended. 
+
+However, the development team was able to acquire essential skills in:
+
+- **Mobile Development**, using `Kotlin Multiplatform`, `Jetpack Compose`, `Ktor`.
+- **Mobile CI/CD**, with solid practices in `Continuous Integration` and `Continuous Delivery` in Mobile using Kotlin.
+- **Cloud Monitoring**, using `Google Cloud Platform API's`.
+- **Project management**, using `Agile Methodologies`, such as `Scrum` and `Kanban`, as well as learning more about requirements gathering.
+- **Software Development Life Cycle (SDLC)**, as we had to simulate its application during the project's development.
 
 ## Objectives:
 
@@ -17,7 +29,9 @@ The main audience that will benefit from the app comprises small and medium-size
 
 # How to download apk
 
-[![](https://markdown-videos-api.jorgenkh.no/youtube/_wL90vErURQ)](https://youtu.be/_wL90vErURQ))
+Follow the tutorial below to download the `Kloud.apk`
+
+[![](https://markdown-videos-api.jorgenkh.no/youtube/_wL90vErURQ)](https://youtu.be/_wL90vErURQ)
 
 
 # Repository Structure
