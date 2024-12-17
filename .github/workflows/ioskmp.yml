@@ -1,4 +1,4 @@
-name: IOS CICD
+name: iOS CI/CD
 
 on:
   push:
@@ -7,9 +7,9 @@ on:
     branches: [ "main", "dev" ]
 
 jobs:
-
-  test:
+  build-and-test:
     runs-on: macos-latest
+
     steps:
       - uses: actions/checkout@v3
 
@@ -19,25 +19,19 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Run Unit Tests
-        run: chmod +x ./gradlew && ./gradlew testDebugUnitTest
-
-  build:
-    runs-on: macos-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
+      - name: Cache Gradle Dependencies
+        uses: actions/cache@v3
         with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: gradle
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
+      - name: Run Unit Tests
+        run: ./gradlew testDebugUnitTest
 
       - name: Build iOS Framework
         run: ./gradlew :composeApp:linkDebugFrameworkIos
@@ -45,12 +39,10 @@ jobs:
       - name: Create IPA file
         run: |
           mkdir -p output/ios
-          xcodebuild -create-xcframework \
-            -framework composeApp/build/bin/iosX64/debugFramework/composeApp.framework \
-            -output output/ios/composeApp.xcframework
+          xcodebuild -workspace composeApp.xcworkspace -scheme composeApp -configuration Debug -destination 'generic/platform=iOS' -sdk iphoneos BUILD_LIBRARY_FOR_DISTRIBUTION=YES CODE_SIGN_IDENTITY="iPhone Developer" CODE_SIGN_IDENTITY_BUILD_SETTING="iPhone Developer" PROVISIONING_PROFILE="Your Provisioning Profile UUID" -export-archive -archivePath "output/ios/app.xcarchive" -exportOptionsPlist exportOptions.plist
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
           name: KloudIOS
-          path: output/ios/
+          path: output/ios/app.xcarchive
