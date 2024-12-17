@@ -9,41 +9,48 @@ on:
 jobs:
 
   test:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v3
-        - name: set up JDK 17
-          uses: actions/setup-java@v1
-          with:
-            java-version: '17'
-  
-        - name: Run unit tests
-          run: chmod +x ./gradlew && ./gradlew testDebugUnitTest
-        
-  
-  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
 
-    runs-on: ubuntu-latest
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Run Unit Tests
+        run: chmod +x ./gradlew && ./gradlew testDebugUnitTest
+
+  build:
+    runs-on: macos-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    
-    - name: set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: gradle
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
 
-    - name: Build with Gradle
-      run: ./gradlew :composeApp:iosX64Binaries
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v4.3.1
-      with:
-        name: KloudIOS
-        path: composeApp/build/outputs/apk/debug/composeApp-debug.ipa
+      - name: Build iOS Framework
+        run: ./gradlew :composeApp:linkDebugFrameworkIos
+
+      - name: Create IPA file
+        run: |
+          mkdir -p output/ios
+          xcodebuild -create-xcframework \
+            -framework composeApp/build/bin/iosX64/debugFramework/composeApp.framework \
+            -output output/ios/composeApp.xcframework
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: KloudIOS
+          path: output/ios/
