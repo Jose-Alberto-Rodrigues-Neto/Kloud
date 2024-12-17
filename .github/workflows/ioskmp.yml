@@ -1,4 +1,4 @@
-name: Android CICD
+name: IOS CICD
 
 on:
   push:
