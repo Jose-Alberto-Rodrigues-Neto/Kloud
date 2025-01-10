@@ -11,38 +11,62 @@ jobs:
     runs-on: macos-latest
 
     steps:
+      # Step 1: Checkout code
       - uses: actions/checkout@v3
 
+      # Step 2: Set up JDK 17
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
+      # Step 3: Cache Gradle Dependencies
       - name: Cache Gradle Dependencies
         uses: actions/cache@v3
         with:
           path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      # Step 4: Grant execute permission for gradlew
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: chmod +x ./gradlew
 
+      # Step 5: Run Unit Tests
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest
 
+      # Step 6: Build iOS Framework
       - name: Build iOS Framework
         run: ./gradlew :composeApp:linkDebugFrameworkIos
 
+      # Step 7: Create IPA file
       - name: Create IPA file
         run: |
           mkdir -p output/ios
-          xcodebuild -workspace composeApp.xcworkspace -scheme composeApp -configuration Debug -destination 'generic/platform=iOS' -sdk iphoneos BUILD_LIBRARY_FOR_DISTRIBUTION=YES CODE_SIGN_IDENTITY="iPhone Developer" CODE_SIGN_IDENTITY_BUILD_SETTING="iPhone Developer" PROVISIONING_PROFILE="Your Provisioning Profile UUID" -export-archive -archivePath "output/ios/app.xcarchive" -exportOptionsPlist exportOptions.plist
+          xcodebuild \
+            -workspace composeApp.xcworkspace \
+            -scheme composeApp \
+            -configuration Debug \
+            -destination 'generic/platform=iOS' \
+            -sdk iphoneos \
+            BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+            CODE_SIGN_IDENTITY="iPhone Developer" \
+            PROVISIONING_PROFILE_SPECIFIER="Your Provisioning Profile Name" \
+            -archivePath "output/ios/app.xcarchive" \
+            archive
 
+          xcodebuild \
+            -exportArchive \
+            -archivePath "output/ios/app.xcarchive" \
+            -exportPath "output/ios" \
+            -exportOptionsPlist exportOptions.plist
+
+      # Step 8: Upload Build Artifact
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: KloudIOS
-          path: output/ios/app.xcarchive
+          name: iOS-Build
+          path: output/ios
